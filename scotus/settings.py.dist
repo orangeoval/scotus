@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'rlsl4293tp4e6c)$4!w)5h-7tngl6m4e!c__ecvrq-tc6xftd0'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False 
+DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -63,7 +63,9 @@ ROOT_URLCONF = 'scotus.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [
+            BASE_DIR + '/templates',
+        ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,12 +86,12 @@ WSGI_APPLICATION = 'scotus.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'MYSQL_DB',
-        'USER': 'MYSQL_USER',
-        'PASSWORD': 'MYSQL_PASSWORD',
-        'HOST': 'localhost',
-        'PORT': '3306',
+        'ENGINE':	'django.db.backends.mysql',
+        'NAME':		'MYSQL_DB',
+        'USER':		'MYSQL_USER',
+        'PASSWORD':	'MYSQL_PASS',
+        'HOST':		'localhost',
+        'PORT':		'3306',
     }
 }
 
@@ -112,3 +114,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.8/howto/static-files/
 
 STATIC_URL = '/static/'
+
+STATICFILES_DIRS = [
+    BASE_DIR + STATIC_URL,
+]
