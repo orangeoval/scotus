@@ -9,5 +9,7 @@ urlpatterns = [
 
     url(r'^$', 'scotus.views.overview', name='overview'),
     url('', include('citations.urls')),
+    url('', include('opinions.urls')),
+    url('', include('authors.urls')),
     url(r'^admin/', include(admin.site.urls)),
 ]
