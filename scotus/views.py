@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
 def overview(request):
-    page = 'overview.html'
-    context = {'page': page};
-    return render(request, page, context)
+    template = 'overview.html'
+    context = {'template': template};
+    return render(request, template, context)

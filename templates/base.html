@@ -2,10 +2,14 @@
 
 <!DOCTYPE html>
 <head>
-    <link rel="stylesheet" href="/static/js/jquery-1.11.2.min.js">
-    <link rel="stylesheet" href="/static/js/bootstrap-3.3.4.min.js">
-    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.min.css">
     <title>United States Supreme Court Web Citations</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+
+    {# <script src="/static/js/jquery-1.11.2.min.js"></script> #}
+    {# <script src="/static/js/bootstrap-3.3.4.min.js"></script> #}
+    {# <link href="/static/css/bootstrap-3.3.4.min.css" media="all" rel="stylesheet"> #}
+    {# <link href="/static/css/bootstrap-glyphicons.css" media="all" rel="stylesheet"> #}
 </head>
 
 <body>
@@ -23,10 +27,10 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/">Overview</a></li>
-            <li><a href="/citations">Citations</a></li>
-            <li><a href="/opinions">Opinions</a></li>
-            <li><a href="/authors">Authors</a></li>
+            <li class="{% if request.path == '/' %}active{% endif %}"><a href="/">Overview</a></li>
+            <li class="{% if request.path == '/citations/' %}active{% endif %}"><a href="/citations">Citations</a></li>
+            <li class="{% if request.path == '/opinions/' %}active{% endif %}"><a href="/opinions">Opinions</a></li>
+            <li class="{% if request.path == '/authors/' %}active{% endif %}"><a href="/authors">Authors</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
