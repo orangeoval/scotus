@@ -1,19 +1,37 @@
+{% load bootstrap3 %}
+
 <!DOCTYPE html>
-<html lang="en">
 <head>
-    <title>United States Supreme Court Web Citations</title>
+    {% bootstrap_css %}
+    {% bootstrap_javascript %}
+    <title>{% block title %}{% endblock %}</title>
 </head>
 
-<div>
-    <p>scotus/templates/base.html HEADER</p>
-</div>
-
 <body>
+    {# NAVBAR #}
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand">U.S. Supreme Court Web Citations</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/">Overview</a></li>
+            <li><a href="/citations">Citations</a></li>
+            <li><a href="/opinions">Opinions</a></li>
+            <li><a href="/authors">Authors</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>    
+
     {% block content %}{% endblock %}
 </body>
-
-<div>
-  <p>scotus/templates/base.html FOOTER</p>
-</div>
 
 </html>
