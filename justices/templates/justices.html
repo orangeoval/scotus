@@ -2,6 +2,38 @@
 {% load bootstrap3 %}
 
 {% block content %}
-<h3>This is the <u>{{ template }}</u> page</h3>
-<p>A list of Justices will appear below</p>
+    <br>
+    <table class="table table-striped">
+       <thead>
+         <tr>
+           <th>Justice</th>
+           <th>Published Opinions</th>
+           <th>Total Web Citations</th>
+           <th>Avg. Web Citations Per Opinion</th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr>
+           <td>Justice A</td>
+           <td>100</td>
+           <td>20</td>
+           <td>.2</td>
+           <td>.2</td>
+        </tr>
+        <tr>
+           <td>Justice A</td>
+           <td>100</td>
+           <td>20</td>
+           <td>.2</td>
+           <td>.2</td>
+        </tr>
+        <tr>
+           <td>Justice A</td>
+           <td>100</td>
+           <td>20</td>
+           <td>.2</td>
+           <td>.2</td>
+        </tr>
+      </tbody>
+    </table>
 {% endblock %}

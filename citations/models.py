@@ -20,7 +20,7 @@ class Citation(models.Model):
                                          choices=SCRAPE_EVALUATIONS,
                                          default=GOOD_SCRAPE)
     validated = models.URLField(max_length=255,default=0)
-    verify_date = models.DateTimeField('date verified')
+    verify_date = models.DateTimeField('date verified', blank=True, null=True)
     rotted = models.BooleanField(default=False)
     redirected = models.BooleanField(default=False)
     archived_lc = models.BooleanField(default=False)

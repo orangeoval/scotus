@@ -2,6 +2,39 @@
 {% load bootstrap3 %}
 
 {% block content %}
-<h3>This is the <u>{{ template }}</u> page</h3>
-<p>A table of scraped citations will appear below</p>
+    <br>
+    <table class="table table-striped">
+       <thead>
+         <tr>
+           <th>Status</th>
+           <th>Citation</th>
+           <th>Opinion</th>
+           <th>Library of Congress</th>
+           <th>Internet Archive</th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr>
+           <td>validated</td>
+           <td>http://wwww.google.com</td>
+           <td>Someone vs. Someone Else</td>
+           <td>NA</td>
+           <td>NA</td>
+        </tr>
+        <tr>
+           <td>validated</td>
+           <td>http://wwww.google.com/some_really_really_really_really_long_path_to_a_file</td>
+           <td>Someone vs. Someone Else</td>
+           <td>NA</td>
+           <td>NA</td>
+        </tr>
+        <tr>
+           <td>validated</td>
+           <td>http://wwww.google.com</td>
+           <td>Someone vs. Someone Else</td>
+           <td>NA</td>
+           <td>NA</td>
+        </tr>
+      </tbody>
+    </table>
 {% endblock %}

@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('scraped', models.URLField(max_length=255)),
                 ('scrape_evaluation', models.CharField(default=b'gs', max_length=2, choices=[(b'gs', b'good scrape'), (b'bs', b'bad scrape'), (b'bc', b'bad citation')])),
                 ('validated', models.URLField(default=0, max_length=255)),
-                ('verify_date', models.DateTimeField(verbose_name=b'date verified')),
+                ('verify_date', models.DateTimeField(null=True, verbose_name=b'date verified', blank=True)),
                 ('rotted', models.BooleanField(default=False)),
                 ('redirected', models.BooleanField(default=False)),
                 ('archived_lc', models.BooleanField(default=False)),

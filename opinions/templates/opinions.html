@@ -2,6 +2,47 @@
 {% load bootstrap3 %}
 
 {% block content %}
-<h3>This is the <u>{{ template }}</u> page</h3>
-<p>A list of all found opinions will appear below</p>
+    <br>
+    <table class="table table-striped">
+       <thead>
+         <tr>
+           <th>Opinion</th>
+           <th>Justice</th>
+           <th>Published</th>
+           <th>Updated</th>
+           <th>Web Citations</th>
+           <th>Library of Congress</th>
+           <th>Internet Archive</th>
+         </tr>
+       </thead>
+       <tbody>
+         <tr>
+           <td>Someone vs Someone Else</td>
+           <td>Justice A</td>
+           <td>2015/01/01</td>
+           <td></td>
+           <td>5</td>
+           <td>NA</td>
+           <td>NA</td>
+        </tr>
+        <tr>
+           <td>Someone vs Someone Else</td>
+           <td>Justice A</td>
+           <td>2015/01/01</td>
+           <td></td>
+           <td>5</td>
+           <td>NA</td>
+           <td>NA</td>
+        </tr>
+        <tr>
+           <td>Someone vs Someone Else</td>
+           <td>Justice A</td>
+           <td>2015/01/01</td>
+           <td></td>
+           <td>5</td>
+           <td>NA</td>
+           <td>NA</td>
+        </tr>
+      </tbody>
+    </table>
 {% endblock %}

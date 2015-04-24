@@ -6,6 +6,7 @@ class Opinion(models.Model):
     category = models.CharField(max_length=15)
     discovered = models.DateTimeField('date discovered')
     published = models.DateTimeField('date published')
+    updated = models.DateTimeField('date updated', blank=True, null=True)
     name = models.CharField(max_length=255)
     pdf_url = models.URLField(max_length=255)
     reporter = models.CharField(max_length=50)
