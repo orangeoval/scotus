@@ -2,14 +2,15 @@
 
 <!DOCTYPE html>
 <head>
-    {% bootstrap_css %}
-    {% bootstrap_javascript %}
-    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="/static/js/jquery-1.11.2.min.js">
+    <link rel="stylesheet" href="/static/js/bootstrap-3.3.4.min.js">
+    <link rel="stylesheet" href="/static/css/bootstrap-3.3.4.min.css">
+    <title>United States Supreme Court Web Citations</title>
 </head>
 
 <body>
     {# NAVBAR #}
-    <nav class="navbar navbar-default">
+    <nav class="navbar navbar-default  navbar-fixed-top" role="navigation">
       <div class="container">
         <div class="navbar-header">
           <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target=".navbar-collapse">
@@ -31,6 +32,7 @@
       </div>
     </nav>    
 
+    <br><br>
     {% block content %}{% endblock %}
 </body>
 
