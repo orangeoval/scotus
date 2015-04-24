@@ -1,0 +1,4 @@
+# CREATE DATABASE scotus DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+# CREATE USER 'scotus'@'localhost' IDENTIFIED BY 'scotus';
+# GRANT ALL PRIVILEGES ON scotus.* TO 'scotus'@'localhost';
+#
