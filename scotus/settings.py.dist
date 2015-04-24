@@ -39,7 +39,7 @@ DJANGO_APPS = [
 ]
 
 THIRD_PARTY_APPS = [
-    'django-bootstrap3',
+    'bootstrap3',
 ]
 
 PROJECT_APPS = []
