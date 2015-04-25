@@ -42,7 +42,11 @@ THIRD_PARTY_APPS = [
     'bootstrap3',
 ]
 
-PROJECT_APPS = []
+PROJECT_APPS = [
+    'citations',
+    'opinions',
+    'justices',
+]
 
 INSTALLED_APPS = DJANGO_APPS + THIRD_PARTY_APPS + PROJECT_APPS
 
@@ -89,7 +93,7 @@ DATABASES = {
         'ENGINE':	'django.db.backends.mysql',
         'NAME':		'MYSQL_DB',
         'USER':		'MYSQL_USER',
-        'PASSWORD':	'MYSQL_PASS',
+        'PASSWORD':	'MYSQL_PASSWORD',
         'HOST':		'localhost',
         'PORT':		'3306',
     }
@@ -118,3 +122,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR + STATIC_URL,
 ]
+
+# Custom user agent for network requests
+USER_AGENT = 'Branched version of http://github.com/edsu/opinions running at Library of Congress' 
+CONTACT_EMAIL = 'pard@loc.gov'
+REQ_HEADER = {"User-Agent": USER_AGENT, 'From': CONTACT_EMAIL}
