@@ -1,4 +1,10 @@
-# CREATE DATABASE scotus DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
-# CREATE USER 'scotus'@'localhost' IDENTIFIED BY 'scotus';
-# GRANT ALL PRIVILEGES ON scotus.* TO 'scotus'@'localhost';
+# Project layout follows: http://www.revsys.com/blog/2014/nov/21/recommended-django-project-layout/
+#
+# After installing and running mysql, get started by running the following to set up your
+# database and user priviledges.  The below example is for a generic environment where
+# the database, user, and password all = 'scotus'
+#
+# 	CREATE DATABASE scotus DEFAULT CHARACTER SET utf8 DEFAULT COLLATE utf8_general_ci;
+# 	CREATE USER 'scotus'@'localhost' IDENTIFIED BY 'scotus';
+# 	GRANT ALL PRIVILEGES ON scotus.* TO 'scotus'@'localhost';
 #
