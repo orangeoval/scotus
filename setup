@@ -1,4 +1,5 @@
 # Project layout follows: http://www.revsys.com/blog/2014/nov/21/recommended-django-project-layout/
+# Bootstrap designs from here: http://getbootstrap.com/examples/theme/
 #
 # After installing and running mysql, get started by running the following to set up your
 # database and user priviledges.  The below example is for a generic environment where
