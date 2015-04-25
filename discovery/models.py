@@ -1,4 +1,5 @@
 from django.db import models
+from opinions.models import Opinion
 from HTMLParser import HTMLParser
 from requests import get
 
@@ -81,6 +82,12 @@ class Discovery:
                     del table_data[0]
 
                     for row in table_data:
+               
+                        # Slip opinions have extra "reporter" column at the front
+                        # If not slip, add blank element to list at front
+                        if len(row) == 6:
+                            row = [''] + row
+
                         self.opinions.append({
                             'reporter': row[0],
                             'published': row[1],
@@ -91,15 +98,6 @@ class Discovery:
                             'part': row[6],
                         })
 
-                    for opinion in self.opinions:
-                        print "OPINION:", opinion
-
-                    #print "TABLE:", category
-                    #for row in table_data:
-                    #    print "ROW:"
-                    #    for cell in row:
-                    #        print "\tCELL:", cell
-         
-                    #REMOVE
-                    import sys
-                    sys.exit(0)
+    def import_new_opinions(self):
+        for opinion in self.opinions:
+            print "OPINION:", opinion['pdf_url']
