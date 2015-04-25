@@ -1,24 +1,33 @@
 from scotus import settings
 from django.db import models
+from django.utils import timezone
+
 from opinions.models import Opinion
 from citations.models import Citation
+from justices.models import Justice
+
 from requests import get
 from datetime import datetime
 import lxml.html
 
+
 class Discovery:
     def __init__(self):
+        self.opinions = []
+        self.category_urls = []
+        self.pdfs_to_scrape = []
         self.BASE = 'http://www.supremecourt.gov'
         self.OPINIONS_BASE = self.BASE + '/opinions/'
         self.OPINIONS_MAIN_PAGE = self.OPINIONS_BASE + 'opinions.aspx'
-        self.category_urls = []
-        self.opinions = []
 
     def run(self):
-        self.get_opinion_category_urls()
+        self.fetch_opinion_category_urls()
         self.get_opinions_from_categories()
+        self.ingest_new_opinions()
+        self.scrape_new_opinions()
+        self.ingest_new_citations()
 
-    def get_opinion_category_urls(self):
+    def fetch_opinion_category_urls(self):
         request = get(self.OPINIONS_MAIN_PAGE, headers=settings.REQ_HEADER)
 
         if request.status_code == 200:
@@ -44,25 +53,42 @@ class Discovery:
                             
                     if opinion:
 
-                        # Slip opinions have extra 'reporter' as first column
-                        # add blank first column to non slip opinions
+                        # Slip opinions have extra 'reporter' column as first
+                        # column. Add blank first column to non slip opinions
                         if len(opinion) == 6:
                             opinion = [''] + opinion
 
-                        # Standardize published date from American mm/dd/yy
-                        # or mm-dd-yy format
+                        # Standardize published date to YYYY-MM-DD format
                         opinion[1] = opinion[1].replace('-', '/')
                         opinion[1] = datetime.strptime(opinion[1], "%m/%d/%y").strftime("%Y-%m-%d")                
-                        self.opinions.append({
-                            'category': category,
-                            'reporter': opinion[0],
-                            'published': opinion[1],
-                            'docket': opinion[2],
-                            'name': opinion[3],
-                            'pdf_url': opinion[4],
-                            'justice': opinion[5],
-                            'part': opinion[6],
-                        })
 
-    def scrape_urls_from_pdf(self):
+                        self.opinions.append(Opinion(
+                            category=category,
+                            reporter=opinion[0],
+                            published=opinion[1],
+                            docket=opinion[2],
+                            name=opinion[3],
+                            pdf_url=opinion[4],
+                            justice=Justice(opinion[5]),
+                            part=opinion[6],
+                            discovered=timezone.now(),
+                        ))
+
+    def ingest_new_opinions(self):
+        for opinion in self.opinions:
+            if not Opinion.objects.filter(
+                name=opinion.name,
+                pdf_url=opinion.pdf_url,
+                published=opinion.published,
+                category=opinion.category,
+                reporter=opinion.reporter,
+                docket=opinion.docket,
+                justice=opinion.justice,
+                part=opinion.part):
+
+                opinion.save()
+
+    def scrape_new_opinions():
+        pass
+    def ingest_new_citations():
         pass
