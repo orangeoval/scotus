@@ -13,6 +13,7 @@ class Opinion(models.Model):
     docket = models.CharField(max_length=20)
     part = models.CharField(max_length=20)
     justice = models.ForeignKey('justices.Justice'); 
+    updated = models.BooleanField(default=False)
 
     REQUIRED_KEYS = [
         'category',
@@ -25,33 +26,33 @@ class Opinion(models.Model):
         'part',
     ]
 
-    def verify_dictionary(self, dictionary=False):
+    def verify_ingest(self, dictionary=False):
         if not dictionary:
-            self.is_valid = False
-            self.can_ingest = False
-        if dictionary:
-            self.is_valid = True
-            self.can_ingest = True
+            return False
 
-            for key in Opinion.REQUIRED_KEYS:
-                if not key in dictionary:
-                    self.is_valid = False
-                else:
-                    if key == 'justice':
-                        dictionary[key] = Justice(dictionary[key])
-                    setattr(self, key, dictionary[key])
-            if self.is_valid:
-                if Opinion.objects.filter(name=dictionary['name'],pdf_url=dictionary['pdf_url']):
-                    self.can_ingest = False
+        for key in Opinion.REQUIRED_KEYS:
+            if not key in dictionary:
+                return False
+            else:
+                if key == 'justice':
+                    dictionary[key] = Justice(dictionary[key])
 
-    def ingest(self, dictionary):
-        if not Opinion.objects.filter(name=dictionary['name']):
-            self.category = dictionary['category']
-            self.reporter = dictionary['reporter']
-            self.published = dictionary['published']
-            self.docket = dictionary['docket']
-            self.name = dictionary['name']
-            self.pdf_url = dictionary['pdf_url']
-            self.justice = Justice(dictionary['justice'])
-            self.part = dictionary['part']
-            self.discovered = timezone.now()
+                setattr(self, key, dictionary[key])
+
+        if Opinion.objects.filter(
+            name=self.name,
+            pdf_url=self.pdf_url,
+            published=self.published,
+            category=self.category,
+            reporter=self.reporter,
+            docket=self.docket,
+            justice=self.justice,
+            part=self.part,):
+
+            return False
+
+        self.discovered = timezone.now()
+        return True
+
+    def ingest(self):
+        self.save()
