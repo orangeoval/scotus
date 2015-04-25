@@ -9,7 +9,7 @@ class Opinion(models.Model):
     updated = models.DateTimeField('date updated', blank=True, null=True)
     name = models.CharField(max_length=255)
     pdf_url = models.URLField(max_length=255)
-    reporter = models.CharField(max_length=50)
+    reporter = models.CharField(max_length=50, blank=True, null=True)
     docket = models.CharField(max_length=20)
     part = models.CharField(max_length=20)
     justice = models.ForeignKey('justices.Justice'); 
