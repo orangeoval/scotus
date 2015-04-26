@@ -10,8 +10,8 @@ class Citation(models.Model):
         (BAD_CITATION, 'bad citation'),
     )
     WAYBACKS = {
-        'lc': 'http://webarchive.loc.gov/all/*',
-        'ia': 'http://web.archive.org/web/*',
+        'lc': 'http://webarchive.loc.gov/all/*/',
+        'ia': 'http://web.archive.org/web/*/',
     }
 
     opinion = models.ForeignKey('opinions.Opinion')
