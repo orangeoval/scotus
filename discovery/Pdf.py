@@ -82,6 +82,9 @@ class Pdf:
             return False
 
         # Replace newlines with spaces, then create newlines at instances of 'http'
+        #ADDRESS: find pythonic way of doing replacement on multiple needle/search terms for all newlines
+        #ADDRESS: should be using r'' string format?
+        new_lines = ['\n', '&#xD', '\r']
         text = re.sub('\n', '', self.text)
         text = re.sub('http', '\nhttp', text)
         lines = text.split('\n')
@@ -89,4 +92,36 @@ class Pdf:
         # Loop over newlines created, url should be first element
         for line in lines:
             if line.startswith('http'):
-                self.urls.append(line.split(' ')[0])
+
+                # Many of the cited urls have poor formatting, such as spaces
+                # before and after slashes, spaces after http://, punctuation
+                # at the end of the string, etc.  We clean that up here. The
+                # weirdness is so inconsistent that we can't systematically
+                # fix everything at the moment, which is why a user must verify
+                # all scraped links
+                partial_schemes = ['http', 'http:', 'http:/', 'http://']
+                common_endings = ['com', 'gov', 'net', 'edu', 'mil', 'htm', 'php', 'asp', 'pdf']
+                punctuation = ['.', ',', ';']
+
+                words = line.split()
+                url = words[0]
+                next_word = 1
+
+                # Unnecessary space in url?
+                while url in partial_schemes or \
+                    url[-1] == '_' or \
+                    words[next_word][0] in ['/', '_'] or \
+                    (url[-1] == '.' and words[next_word][0:3] in common_endings):
+
+                    url = url + words[next_word]
+                    next_word += 1
+
+                # Punctuation at end of string?
+                if url[-1] in punctuation and \
+                    words[next_word][0:3] not in common_endings:
+                    url = url[0:-1]
+
+                # Some opinions cite the same link multiple times. Add if not
+                # already in list
+                if not url in self.urls:
+                    self.urls.append(url)
