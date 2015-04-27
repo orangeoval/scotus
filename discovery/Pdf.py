@@ -99,21 +99,54 @@ class Pdf:
                 # weirdness is so inconsistent that we can't systematically
                 # fix everything at the moment, which is why a user must verify
                 # all scraped links
-                partial_schemes = ['http', 'http:', 'http:/', 'http://']
-                common_endings = ['com', 'gov', 'net', 'edu', 'mil', 'htm', 'php', 'asp', 'pdf']
-                punctuation = ['.', ',', ';']
+                common_endings = [
+                    'com',
+                    'gov',
+                    'net',
+                    'edu',
+                    'mil',
+                    'htm',
+                    'tml',
+                    'php',
+                    'asp',
+                    'pdf',
+                ]
+                punctuation = [
+                    '.',
+                    ',', 
+                    ';',
+                    '?',
+                    '=',
+                    ':',
+                    '_',
+                    '-',
+                    '#',
+                    '$',
+                    '%',
+                    '+',
+                ]
+                partials = [
+                    'www', 'www.',
+                    'http', 'https',
+                    'http:', 'https:',
+                    'http:/', 'https:/',
+                    'http://', 'https://',
+                    'http://www', 'https://www',
+                    'http://www.', 'https://www.',
+                ]
 
                 words = line.split()
-                url = words[0]
+                url = words[0].strip()
                 next_word = 1
 
                 # Unnecessary space in url?
-                while url in partial_schemes or \
+                while len(words) >= next_word and \
+                    url in partials or \
                     url[-1] == '_' or \
-                    words[next_word][0] in ['/', '_'] or \
-                    (url[-1] == '.' and words[next_word][0:3] in common_endings):
+                    (words[next_word][0] and words[next_word][0] in ['/', '_']) or \
+                    (len(words[next_word]) >= 3 and url.endswith('.') and words[next_word][0:3] in common_endings):
 
-                    url = url + words[next_word]
+                    url = url + words[next_word].strip()
                     next_word += 1
 
                 # Punctuation at end of string?
