@@ -1,10 +1,12 @@
+# -*- coding: utf-8 -*-
+
 from django.db import models
 from django.utils import timezone
 from justices.models import Justice
 
 class Opinion(models.Model):
 
-    category = models.CharField(max_length=15)
+    category = models.CharField(max_length=30)
     discovered = models.DateTimeField('date discovered')
     published = models.DateField('date published')
     name = models.CharField(max_length=255)
