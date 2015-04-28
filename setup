@@ -14,3 +14,11 @@
 #	./manage.py migrate opinions zero
 #	./manage.py migrate citations zero
 #	./manage.py migrate
+#
+# If running on OSX< may see non fatal errors in discovery process related to SSL, can fix with:
+#
+#	pip install requests[security]
+#
+# Not including this in the requirements, however, as it shouldn't be a problem on linux. See:
+#
+#	https://github.com/chrippa/livestreamer/issues/819
