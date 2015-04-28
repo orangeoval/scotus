@@ -9,3 +9,8 @@
 # 	CREATE USER 'scotus'@'localhost' IDENTIFIED BY 'scotus';
 # 	GRANT ALL PRIVILEGES ON scotus.* TO 'scotus'@'localhost';
 #
+# To drop and recreate tables from scratch:
+#
+#	./manage.py migrate opinions zero
+#	./manage.py migrate citations zero
+#	./manage.py migrate
