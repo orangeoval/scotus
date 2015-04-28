@@ -82,6 +82,11 @@ class Discovery:
                         # Report out
                         print 'Discovered: %s  %s' % (opinion[3], opinion[4])
 
+                        #TODO: email when new justice created so can create name on back end
+                        if not Justice.objects.filter(id=opinion[5]):
+                            justice = Justice(id=opinion[5], name=opinion[5])
+                            justice.save()
+
                         self.opinions.append(Opinion(
                             category=category,
                             reporter=opinion[0],
