@@ -11,38 +11,18 @@
            <th>Published</th>
            <th>Updated</th>
            <th>Web Citations</th>
-           <th>Library of Congress</th>
-           <th>Internet Archive</th>
          </tr>
        </thead>
        <tbody>
-         <tr>
-           <td>Someone vs Someone Else</td>
-           <td>Justice A</td>
-           <td>2015/01/01</td>
-           <td></td>
-           <td>5</td>
-           <td>NA</td>
-           <td>NA</td>
-        </tr>
-        <tr>
-           <td>Someone vs Someone Else</td>
-           <td>Justice A</td>
-           <td>2015/01/01</td>
-           <td></td>
-           <td>5</td>
-           <td>NA</td>
-           <td>NA</td>
-        </tr>
-        <tr>
-           <td>Someone vs Someone Else</td>
-           <td>Justice A</td>
-           <td>2015/01/01</td>
-           <td></td>
-           <td>5</td>
-           <td>NA</td>
-           <td>NA</td>
-        </tr>
+       {% for opinion in opinions %}
+       <tr>
+         <td><a href="{{ opinion.pdf_url }}">{{ opinion.name }}</a></td>
+         <td>{{ opinion.justice.name }}</td>
+         <td>{{ opinion.published }}</td>
+         <td>{% if opinion.updated %}{{ opinion.updated_date }}{% endif %}</td>
+         <td>{{ opinion.citation_count }}</td>
+       </tr>
+       {% endfor %}
       </tbody>
     </table>
 {% endblock %}
