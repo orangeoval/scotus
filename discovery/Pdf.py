@@ -4,10 +4,9 @@ import re
 import io
 import os
 
-#duplicate imports?
-from requests import get
 from django.utils import timezone
 from scotus import settings
+from discovery.Url import Url
 
 from datetime import datetime
 from pdfminer.pdfpage import PDFPage
@@ -27,8 +26,8 @@ class Pdf:
         if not self.url or not self.local_file:
             return False
 
-        request = get(self.url, headers=settings.REQ_HEADER)
-        if request.status_code != 200:
+        request = Url.get(self.url)
+        if not request or request.status_code != 200:
             return False
 
         with open(self.local_file, 'w') as local:
@@ -118,8 +117,6 @@ class Pdf:
             'pdf',
         ]
         punctuation = [
-            ',',
-            ';',
             '?',
             '=',
             ':',
@@ -129,6 +126,11 @@ class Pdf:
             '$',
             '%',
             '+',
+        ]
+        strip = [
+            '.',
+            ',',
+            ';',
         ]
         partials = [
             'www', 'www.',
@@ -166,7 +168,8 @@ class Pdf:
             else:
                 break
 
-        if url.endswith('.'):
-            url = url[0:-1]
+        for s in strip:
+            if url.endswith(s):
+                url = url[0:-1] 
 
         return url
