@@ -11,18 +11,23 @@ class Url:
     SLEEP = 2
 
     @classmethod
-    def get(cls, url):
-        #TODO: remove wait for production? If so, remove time import 
-        sleep(cls.SLEEP)
+    def get(cls, url=False, err=True):
+        if url:
+            # Wait 2 seconds between requests
+            sleep(cls.SLEEP)
+            check = urlparse(url)
 
-        check = urlparse(url)
-        if not check.scheme:
-            url = 'http://' + url 
+            if not check.scheme:
+                url = 'http://' + url 
 
-        try:
-            return requests.get(url,
-                                headers=cls.HEADERS,
-                                timeout=cls.TIMEOUT,)
-        except Exception:
+            try:
+                return requests.get(url,
+                                    headers=cls.HEADERS,
+                                    timeout=cls.TIMEOUT,)
+            except Exception:
+                pass
+       
+        if err:
             print 'ERROR: fetching %s' % url
-            return False
+
+        return False
