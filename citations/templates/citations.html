@@ -6,7 +6,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Status</th>
+          <th>Validate</th>
           <th>Citation</th>
           <th>Opinion</th>
           <th>Library of Congress</th>
@@ -17,28 +17,28 @@
         {% for citation in citations %}
         <tr>
           <td>
-            {% if citation.status == 'a' %}
-              {% if citation.validated == '0' %}
-              <a href="{{ citation.scraped  }}">available</a>
-              {% else %}
-              <a href="{{ citation.validated  }}">available</a>
-              {% endif %}
-            {% elif citation.status == 'r' %}
-              {% if citation.validated == '0' %}
-              <a href="{{ citation.scraped  }}">redirected</a>
-              {% else %}
-              <a href="{{ citation.validated  }}">redirected</a>
-              {% endif %}
-            {% elif citation.status == 'u' %}
-            unavailable
+            {% if citation.verify_date %}           
+              {{ citation.verify_date }}
+            {% else %}
+              <button type="submit" class="btn btn-primary" title="verify / edit">
+                {% bootstrap_icon "pencil" %}
+              </button>
             {% endif %}
           </td>
 
           <td>
             {% if citation.validated == '0' %}
-            {{ citation.scraped }}
+              {% if citation.status == 'a' %}
+                <a href="{{ citation.scraped  }}">{{ citation.scraped }}</a>
+              {% else %}
+                {{ citation.scraped }}
+              {% endif %}
             {% else %}
-            {{ citation.validated }}
+              {% if citation.status == 'a' %}
+                <a href="{{ citation.validated  }}">{{ citation.validated }}</a>
+              {% else %}
+                {{ citation.validated }}
+              {% endif %}
             {% endif %}
           </td>
 
