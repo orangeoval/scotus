@@ -42,7 +42,7 @@
             {% endif %}
           </td>
 
-          <td>{{ citation.opinion.name }}</td>
+          <td><a href={{ citation.opinion.pdf_url  }}>{{ citation.opinion.name }}</a></td>
 
           <td>
             {% if citation.archived_lc %}
