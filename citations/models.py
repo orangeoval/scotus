@@ -11,10 +11,8 @@ class Citation(models.Model):
         (u'u', u'unavailable'),
         (u'r', u'redirected'),
     )
-    WAYBACKS = {
-        'lc': 'http://webarchive.loc.gov/all/*/',
-        'ia': 'http://web.archive.org/web/*/',
-    }
+    WAYBACK_LC = 'http://webarchive.loc.gov/all/*/'
+    WAYBACK_IA = 'http://web.archive.org/web/*/'
 
     opinion = models.ForeignKey('opinions.Opinion')
     scraped = models.URLField(max_length=255)
