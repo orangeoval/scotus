@@ -12,7 +12,9 @@ def index(request):
         justice.opinion_count = Opinion.objects.filter(justice_id=justice.id).count()
         justice.citation_count = Citation.objects.filter(opinion_id__justice_id=justice.id).count()
         if justice.citation_count:
-            justice.average_count = justice.citation_count / float(justice.opinion_count)
+            average_count = justice.citation_count / float(justice.opinion_count)
+            # Format to 2 decimal places
+            justice.average_count = float("%.2f" % average_count)
         else:
             justice.average_count = 0
  
