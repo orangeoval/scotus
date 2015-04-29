@@ -20,7 +20,13 @@
          <td>{{ opinion.justice.name }}</td>
          <td>{{ opinion.published }}</td>
          <td>{% if opinion.updated %}{{ opinion.updated_date }}{% endif %}</td>
-         <td>{{ opinion.citation_count }}</td>
+         <td>
+           {% if opinion.citation_count %}
+             <a href="/opinions/citations/{{ opinion.id  }}">{{ opinion.citation_count }}</a>
+           {% else %}
+             {{ opinion.citation_count }}
+           {% endif %}
+         </td>
        </tr>
        {% endfor %}
       </tbody>

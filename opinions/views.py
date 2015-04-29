@@ -21,3 +21,11 @@ def index(request):
     }
 
     return render(request, template, context)
+
+def opinion_citations(request, opinion_id):
+    template = 'citations.html'
+    context = {
+        'citations': Citation.objects.filter(opinion_id=opinion_id),
+    }
+
+    return render(request, template, context)
