@@ -11,7 +11,7 @@
 #
 # To drop and recreate tables from scratch:
 #
-#	./manage.py migrate opinions zero; ./manage.py migrate citations zero; ./manage.py migrate
+#	./manage.py migrate opinions zero; ./manage.py migrate citations zero; ./manage.py migrate; rm docs/pdfs/*
 #
 # If running on OSX< may see non fatal errors in discovery process related to SSL, can fix with:
 #
