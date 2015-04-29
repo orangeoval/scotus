@@ -27,6 +27,7 @@ class Discovery:
 
     def run(self):
         print '[INITATING DISCOVERY - %s]' % timezone.now()
+        print '[**%s**]' % self.OPINIONS_MAIN_PAGE
         self.fetch_opinion_category_urls()
         self.get_opinions_from_categories()
         print '[INITIATING OPINION INGEST]'
