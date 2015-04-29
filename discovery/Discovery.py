@@ -92,7 +92,7 @@ class Discovery:
 
     def ingest_new_opinions(self):
 
-        # Sort opinions by oldest published date first
+        # Sort opinions by publication date, oldest to newest
         self.discovered_opinions.sort(key=lambda o: o.published)
 
         for opinion in self.discovered_opinions:
@@ -108,31 +108,21 @@ class Discovery:
                 justice=opinion.justice,
                 part=opinion.part):
 
-                # Report Out
                 print 'Skipping: %s' % opinion.name
                 continue
 
             # Report out
             print 'Ingesting: %s  %s' % (opinion.name, opinion.pdf_url)
 
-            # Check if opinion with same name exists. Sometimes SCOTUS fixes and republishes 
-            # opinion with same opinion name, but usually a different pdf file name
-            opinion.previously_discovered_citations = []
-            for previously_discovered in Opinion.objects.filter(name=opinion.name).exclude(id=opinion.id):
+            # Check if opinion with different values but same name was previously published, set updated flag if so
+            opinion.republished = False
+            for prev in Opinion.objects.filter(name=opinion.name):
+                prev.updated = True
+                prev.save()
+                opinion.republished = True
 
-                # Report out
-                print 'Republished: %s' % opinion.name
-
-                previously_discovered.updated = True
-                previously_discovered.save()
-                opinion.previously_discovered_citations.append(previously_discovered)
- 
-                #TODO: should the logic below be removed, and just have check before inserting citation that citation doesn't exist for opinion with smae name?
-                # Gather previous opinion's scraped and validated citations
-                for citation in Citation.objects.filter(opinion=previously_discovered):
-                    opinion.previously_discovered_citations.append(citation.scraped)
-                    if citation.validated and citation.validated != citation.scraped:
-                        opinion.previously_discovered_citations.append(citation.validated)
+            if opinion.republished:
+                print 'REPUBLISHED!: %s' % opinion.name
 
             # Ingest new opinion to database
             opinion.save()
@@ -151,16 +141,22 @@ class Discovery:
             print 'Scraping: %s  %s' % (opinion.name, local_pdf)
             opinion.pdf.scrape_urls()
 
+            # Gather citations from previous publication of same opinion name, if they exist
+            previous_check_list = []
+            if opinion.republished:
+                previous_citations = Citation.objects.filter(opinion__name=opinion.name).exclude(opinion_id=opinion.id)
+                if previous_citations:
+                   for previous in previous_citations:
+                       previous_check_list.append(previous.scraped)
+                       if previous.validated != '0':
+                           previous_check_list.append(previous.validated)
+
             for url in opinion.pdf.urls:
-                # Skip citation if ingested in previous discovery
-                if url in opinion.previously_discovered_citations:
-
-                    # Report Out
-                    print '--Skipping previously discovered citation: %s' % url
-
+                # Skip citation if scraped from of validated in previous discovery
+                if url in previous_check_list:
+                    print '--Skipping previously discovered citation for %s: %s' % (opinion.name, url)
                     continue
             
-                # Report Out
                 print '++Ingesting citation: %s' % url
 
                 # Check urls status, and see if archived
