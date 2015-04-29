@@ -2,21 +2,22 @@
 
 from scotus import settings
 from django.utils import timezone
+from django.db.models import Q
 
 from discovery.Pdf import Pdf
+from discovery.Pdf import Url
 from opinions.models import Opinion
 from citations.models import Citation
 from justices.models import Justice
 
 import lxml.html
-from requests import get
 from datetime import datetime
-from time import sleep
 
 
 class Discovery:
     def __init__(self):
-        self.opinions = []
+        self.discovered_opinions = []
+        self.new_opinions = []
         self.category_urls = []
         self.pdfs_to_scrape = []
         self.BASE = 'http://www.supremecourt.gov'
@@ -34,18 +35,8 @@ class Discovery:
         self.ingest_new_citations()
         print '[DISCOVERY COMPLETE]'
 
-    def get_url(self, url):
-        #TODO: remove wait for production? If so, remove time import 
-        sleep(2)
-        try:
-            request = get(url, headers=settings.REQ_HEADER)
-            return request
-        except Exception:
-            print 'ERROR: fetching %s' % url
-            return False
-
     def fetch_opinion_category_urls(self):
-        request = self.get_url(self.OPINIONS_MAIN_PAGE)
+        request = Url.get(self.OPINIONS_MAIN_PAGE)
 
         if request and request.status_code == 200:
             html = lxml.html.fromstring(request.text)
@@ -56,7 +47,7 @@ class Discovery:
     def get_opinions_from_categories(self):
         for category_url in self.category_urls:
             category = category_url.split('/')[-2]
-            request = self.get_url(category_url)    
+            request = Url.get(category_url)    
 
             if request and request.status_code == 200:
                 html = lxml.html.fromstring(request.text)
@@ -87,7 +78,7 @@ class Discovery:
                             justice = Justice(id=opinion[5], name=opinion[5])
                             justice.save()
 
-                        self.opinions.append(Opinion(
+                        self.discovered_opinions.append(Opinion(
                             category=category,
                             reporter=opinion[0],
                             published=opinion[1],
@@ -100,7 +91,12 @@ class Discovery:
                         ))
 
     def ingest_new_opinions(self):
-        for opinion in self.opinions:
+
+        # Sort opinions by oldest published date first
+        self.discovered_opinions.sort(key=lambda o: o.published)
+
+        for opinion in self.discovered_opinions:
+
             # If find match on all fields already in database, skip and continue
             if Opinion.objects.filter(
                 name=opinion.name,
@@ -114,18 +110,15 @@ class Discovery:
 
                 # Report Out
                 print 'Skipping: %s' % opinion.name
-
-                # Remove previously discovered opinion from processig list
-                del self.opinions[self.opinions.index(opinion)]
                 continue
 
             # Report out
             print 'Ingesting: %s  %s' % (opinion.name, opinion.pdf_url)
- 
+
             # Check if opinion with same name exists. Sometimes SCOTUS fixes and republishes 
             # opinion with same opinion name, but usually a different pdf file name
             opinion.previously_discovered_citations = []
-            for previously_discovered in Opinion.objects.filter(name=opinion.name):
+            for previously_discovered in Opinion.objects.filter(name=opinion.name).exclude(id=opinion.id):
 
                 # Report out
                 print 'Republished: %s' % opinion.name
@@ -143,9 +136,10 @@ class Discovery:
 
             # Ingest new opinion to database
             opinion.save()
+            self.new_opinions.append(opinion)
             
     def ingest_new_citations(self):
-        for opinion in self.opinions:
+        for opinion in self.new_opinions:
             local_pdf = settings.PDF_DIR + str(opinion.id) + '.pdf'
             opinion.pdf = Pdf(
                 opinion.pdf_url,
@@ -154,7 +148,7 @@ class Discovery:
 
             print 'Downloading: %s  %s' % (opinion.name, opinion.pdf_url)
             opinion.pdf.download()
-            print 'Scraping: %s  %s' % (opinion.name, opinion.pdf_url)
+            print 'Scraping: %s  %s' % (opinion.name, local_pdf)
             opinion.pdf.scrape_urls()
 
             for url in opinion.pdf.urls:
@@ -188,18 +182,18 @@ class Discovery:
             u'archived_ia': False,
         }
 
-        request = self.get_url(url)
+        request = Url.get(url)
         if not request or request.status_code == 404:
             status[u'citation'] = u'u'
         if request and request.status_code in [302, 301]:
             status[u'citation'] = u'r'
 
         #TODO: Uncomment this on LIB network.  lx7 doesn't like machine requests off network
-        #request = self.get_url(Citation.WAYBACKS['lc'] + url)
+        #request = Url.get(Citation.WAYBACK_LC + url)
         #if request and request.status_code == 200:
         #    status[u'archived_lc'] = True
 
-        request = self.get_url(Citation.WAYBACKS['ia'] + url)
+        request = Url.get(Citation.WAYBACK_IA + url)
         if request and request.status_code == 200:
             status[u'archived_ia'] = True
 
