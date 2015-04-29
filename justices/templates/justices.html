@@ -15,9 +15,9 @@
       {% for justice in justices %}
       <tr>
         <td>{{ justice.name }}</td>
-        <td>100</td>
-        <td>20</td>
-        <td>.2</td>
+        <td>{{ justice.opinion_count }}</td>
+        <td>{{ justice.citation_count }}</td>
+        <td>{{ justice.average_count }}</td>
       </tr>
       {% endfor %}
       <tbody>
