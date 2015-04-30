@@ -2,6 +2,7 @@ from django.shortcuts import render
 from justices.models import Justice
 from opinions.models import Opinion
 from citations.models import Citation
+from django.http import HttpResponseRedirect
 
 def index(request):
     template = 'justices.html'
@@ -15,3 +16,6 @@ def index(request):
     }
 
     return render(request, template, context)
+
+def redirect(request, *args):
+    return HttpResponseRedirect('/justices/')    

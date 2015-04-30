@@ -6,7 +6,7 @@
     <table class="table table-striped">
       <thead>
         <tr>
-          <th>Validate</th>
+          <th>Verified</th>
           <th>Citation</th>
           <th>Opinion</th>
           <th>Library of Congress</th>
@@ -20,9 +20,7 @@
             {% if citation.verify_date %}           
               {{ citation.verify_date }}
             {% else %}
-              <button type="submit" class="btn btn-primary" title="verify / edit">
-                {% bootstrap_icon "pencil" %}
-              </button>
+              <a class="btn btn-primary" href="/citations/verify/{{ citation.id  }}" role="button">Verify</a>
             {% endif %}
           </td>
 
