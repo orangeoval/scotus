@@ -15,8 +15,21 @@
       {% for justice in justices %}
       <tr>
         <td>{{ justice.name }}</td>
-        <td>{{ justice.opinion_count }}</td>
-        <td>{{ justice.citation_count }}</td>
+        <td>
+          {% if justice.opinion_count %}
+            <a href="/justices/opinions/{{ justice.id  }}">{{ justice.opinion_count }}</a>
+          {% else %}
+            {{ justice.opinion_count }}
+          {% endif %}
+        </td>
+        <td>
+          {% if justice.citation_count %}
+            <a href="/justices/opinions/citations/{{ justice.id  }}">{{ justice.citation_count  }}</a>
+          {% else %}
+            {{ justice.citation_count }}
+          {% endif %}
+        </td>
+        {# <td>{{ justice.citation_count }}</td> #}
         <td>{{ justice.average_count }}</td>
       </tr>
       {% endfor %}

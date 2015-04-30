@@ -21,9 +21,17 @@ class Justice(models.Model):
     id = models.CharField(max_length=5, primary_key=True)
     name = models.CharField(max_length=50) 
 
-    @classmethod
-    def create(cls, id):
-        if not id in cls.JUSTICE_IDS:
-            id = 'UK'
-        name = cls.JUSTICE_IDS[id]
-        return cls(id=id, name=name)
+    def get_counts(self):
+        from opinions.models import Opinion
+        from citations.models import Citation
+
+        self.opinion_count = Opinion.objects.filter(justice_id=self.id).count()
+        self.citation_count = Citation.objects.filter(opinion_id__justice_id=self.id).count()
+
+        if self.citation_count:
+            average_count = self.citation_count / float(self.opinion_count)
+
+            # Format to 2 decimal places
+            self.average_count = float("%.2f" % average_count)
+        else:
+            self.average_count = 0

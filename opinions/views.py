@@ -7,14 +7,7 @@ def index(request):
     opinions = Opinion.objects.all().order_by('-published')
 
     for opinion in opinions:
-
-        # Get citation counts
-        opinion.citation_count = Citation.objects.filter(opinion=opinion.id).count()
-
-        # Get updated sate
-        if opinion.updated:
-            opinion.updated_date = Opinion.objects.filter(name=opinion.name).latest('published').published
-
+        opinion.get_counts_and_update_date()
 
     context = {
         'opinions': opinions,
@@ -24,8 +17,10 @@ def index(request):
 
 def opinion_citations(request, opinion_id):
     template = 'citations.html'
+    citations = Citation.objects.filter(opinion_id=opinion_id)
+
     context = {
-        'citations': Citation.objects.filter(opinion_id=opinion_id),
+        'citations':citations,
     }
 
     return render(request, template, context)

@@ -8,18 +8,33 @@ def index(request):
     justices = Justice.objects.all()
 
     for justice in justices:
-
-        justice.opinion_count = Opinion.objects.filter(justice_id=justice.id).count()
-        justice.citation_count = Citation.objects.filter(opinion_id__justice_id=justice.id).count()
-        if justice.citation_count:
-            average_count = justice.citation_count / float(justice.opinion_count)
-            # Format to 2 decimal places
-            justice.average_count = float("%.2f" % average_count)
-        else:
-            justice.average_count = 0
+        justice.get_counts()
  
     context = {
         'justices': justices,
+    }
+
+    return render(request, template, context)
+
+def justice_opinions(request, justice_id):
+    template = 'opinions.html'
+    opinions = Opinion.objects.filter(justice_id=justice_id)
+
+    for opinion in opinions:
+        opinion.get_counts_and_update_date()
+
+    context = {
+        'opinions': opinions,
+    }
+
+    return render(request, template, context)
+
+def justice_opinions_citations(request, justice_id):
+    template = 'citations.html'
+    citations = Citation.objects.filter(opinion_id__justice_id=justice_id)
+
+    context = {
+        'citations': citations,
     }
 
     return render(request, template, context)
