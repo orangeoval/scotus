@@ -15,12 +15,15 @@ def index(request):
 
     return render(request, template, context)
 
-def opinion_citations(request, opinion_id):
-    template = 'citations.html'
-    citations = Citation.objects.filter(opinion_id=opinion_id)
+def justice_opinions(request, justice_id):
+    template = 'opinions.html'
+    opinions = Opinion.objects.filter(justice_id=justice_id)
+
+    for opinion in opinions:
+        opinion.get_counts_and_update_date()
 
     context = {
-        'citations':citations,
+        'opinions': opinions,
     }
 
     return render(request, template, context)

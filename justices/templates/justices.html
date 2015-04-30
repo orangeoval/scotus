@@ -17,19 +17,18 @@
         <td>{{ justice.name }}</td>
         <td>
           {% if justice.opinion_count %}
-            <a href="/justices/opinions/{{ justice.id  }}">{{ justice.opinion_count }}</a>
+            <a href="/opinions/{{ justice.id  }}">{{ justice.opinion_count }}</a>
           {% else %}
             {{ justice.opinion_count }}
           {% endif %}
         </td>
         <td>
           {% if justice.citation_count %}
-            <a href="/justices/opinions/citations/{{ justice.id  }}">{{ justice.citation_count  }}</a>
+            <a href="/citations/{{ justice.id  }}">{{ justice.citation_count  }}</a>
           {% else %}
             {{ justice.citation_count }}
           {% endif %}
         </td>
-        {# <td>{{ justice.citation_count }}</td> #}
         <td>{{ justice.average_count }}</td>
       </tr>
       {% endfor %}

@@ -22,7 +22,7 @@
          <td>{% if opinion.updated %}{{ opinion.updated_date }}{% endif %}</td>
          <td>
            {% if opinion.citation_count %}
-             <a href="/opinions/citations/{{ opinion.id  }}">{{ opinion.citation_count }}</a>
+             <a href="/citations/{{ opinion.id  }}">{{ opinion.citation_count }}</a>
            {% else %}
              {{ opinion.citation_count }}
            {% endif %}
