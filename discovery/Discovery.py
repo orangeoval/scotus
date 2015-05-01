@@ -4,10 +4,8 @@ from scotus import settings
 from django.utils import timezone
 from django.db.models import Q
 
-from discovery.Pdf import Pdf
 from discovery.Pdf import Url
 from opinions.models import Opinion
-from citations.models import Citation
 from justices.models import Justice
 
 import lxml.html
@@ -71,7 +69,6 @@ class Discovery:
                         opinion[1] = opinion[1].replace('-', '/')
                         opinion[1] = datetime.strptime(opinion[1], '%m/%d/%y').strftime('%Y-%m-%d')                
 
-                        # Report out
                         print 'Discovered: %s  %s' % (opinion[3], opinion[4])
 
                         #TODO: email when new justice created so can create name on back end
@@ -92,107 +89,28 @@ class Discovery:
                         ))
 
     def ingest_new_opinions(self):
-
         # Sort opinions by publication date, oldest to newest
         self.discovered_opinions.sort(key=lambda o: o.published)
 
         for opinion in self.discovered_opinions:
-
-            # If find match on all fields already in database, skip and continue
-            if Opinion.objects.filter(
-                name=opinion.name,
-                pdf_url=opinion.pdf_url,
-                published=opinion.published,
-                category=opinion.category,
-                reporter=opinion.reporter,
-                docket=opinion.docket,
-                justice=opinion.justice,
-                part=opinion.part):
-
+            if opinion.already_exists():
                 print 'Skipping: %s' % opinion.name
                 continue
 
-            # Report out
-            print 'Ingesting: %s  %s' % (opinion.name, opinion.pdf_url)
+            if opinion.was_republished():
+                print 'Ingesting  (REPUBLISHED): %s' % opinion.name
+                opinion.set_updated_on_previously_published()
+            else:
+                print 'Ingesting: %s  %s' % (opinion.name, opinion.pdf_url)
 
-            # Check if opinion with different values but same name was previously published, set updated flag if so
-            opinion.republished = False
-            for prev in Opinion.objects.filter(name=opinion.name):
-                prev.updated = True
-                prev.save()
-                opinion.republished = True
-
-            if opinion.republished:
-                print 'REPUBLISHED!: %s' % opinion.name
-
-            # Ingest new opinion to database
             opinion.save()
             self.new_opinions.append(opinion)
             
     def ingest_new_citations(self):
         for opinion in self.new_opinions:
-            local_pdf = settings.PDF_DIR + str(opinion.id) + '.pdf'
-            opinion.pdf = Pdf(
-                opinion.pdf_url,
-                local_pdf,
-            )
-
             print 'Downloading: %s  %s' % (opinion.name, opinion.pdf_url)
-            opinion.pdf.download()
-            print 'Scraping: %s  %s' % (opinion.name, local_pdf)
-            opinion.pdf.scrape_urls()
-
-            # Gather citations from previous publication of same opinion name, if they exist
-            previous_check_list = []
-            if opinion.republished:
-                previous_citations = Citation.objects.filter(opinion__name=opinion.name).exclude(opinion_id=opinion.id)
-                if previous_citations:
-                   for previous in previous_citations:
-                       previous_check_list.append(previous.scraped)
-                       if previous.validated != '0':
-                           previous_check_list.append(previous.validated)
-
-            for url in opinion.pdf.urls:
-                # Skip citation if scraped from of validated in previous discovery
-                if url in previous_check_list:
-                    print '--Skipping previously discovered citation for %s: %s' % (opinion.name, url)
-                    continue
-            
-                print '++Ingesting citation: %s' % url
-
-                # Check urls status, and see if archived
-                status = self.check_url_status(url)
-
-                new_citation = Citation(
-                    opinion=Opinion(opinion.id),
-                    scraped=url,
-                    status=status[u'citation'],
-                    archived_lc=status[u'archived_lc'],
-                    archived_ia=status[u'archived_ia'],
-                )
-                new_citation.save()
-
-    def check_url_status(self, url):
-        status = {
-            u'citation': u'a',
-            u'archived_lc': False,
-            u'archived_ia': False,
-        }
-
-        request = Url.get(url)
-        if not request or request.status_code == 404:
-            status[u'citation'] = u'u'
-        if request and request.status_code in [302, 301]:
-            status[u'citation'] = u'r'
-
-        #TODO: Uncomment this on LIB network.  lx7 doesn't like machine requests off network
-        #request = Url.get(Citation.WAYBACK_LC + url)
-        #if request and request.status_code == 200:
-        #    status[u'archived_lc'] = True
-
-        request = Url.get(Citation.WAYBACK_IA + url)
-        if request and request.status_code == 200:
-            status[u'archived_ia'] = True
-
-        return status
-
+            opinion.download()
+            print 'Scraping: %s  %s' % (opinion.name, opinion.local_pdf)
+            opinion.scrape()
+            print 'Ingesting citations from %s ' % opinion.name
+            opinion.ingest_citations()
