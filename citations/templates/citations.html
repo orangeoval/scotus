@@ -1,5 +1,4 @@
 {% extends "base.html" %}
-{% load bootstrap3 %}
 
 {% block content %}
     <br>
@@ -17,7 +16,8 @@
         {% for citation in citations %}
         <tr>
           <td>
-            {% if citation.verify_date %}           
+            <a class='anchor' name='{{ citation.id }}'></a>
+            {% if citation.verify_date %} 
               {{ citation.verify_date }}
             {% else %}
               <a class="btn btn-primary" href="/citations/verify/{{ citation.id  }}" role="button">Verify</a>
@@ -25,17 +25,14 @@
           </td>
 
           <td>
-            {% if citation.validated == '0' %}
+            <!--<a name="{{ citation.id }}"></a>-->
+            {% if citation.validated %}
+                <a href="{{ citation.validated  }}">{{ citation.validated }}</a>
+            {% else %}
               {% if citation.status == 'a' %}
                 <a href="{{ citation.scraped  }}">{{ citation.scraped }}</a>
               {% else %}
                 {{ citation.scraped }}
-              {% endif %}
-            {% else %}
-              {% if citation.status == 'a' %}
-                <a href="{{ citation.validated  }}">{{ citation.validated }}</a>
-              {% else %}
-                {{ citation.validated }}
               {% endif %}
             {% endif %}
           </td>
