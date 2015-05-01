@@ -7,7 +7,5 @@ PYTHONPATH=/Users/arderyp/git/scotus
 export DJANGO_SETTINGS_MODULE
 export PYTHONPATH
 
-python $PYTHONPATH/manage.py migrate opinions zero
-python $PYTHONPATH/manage.py migrate citations zero
-python $PYTHONPATH/manage.py migrate
-rm $PYTHONPATH/docs/pdfs/*
+echo;echo 'RUNNING DISCOVERY';echo
+python $PYTHONPATH/manage.py discover
