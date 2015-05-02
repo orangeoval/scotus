@@ -141,6 +141,12 @@ class Pdf:
             'http://www', 'https://www',
             'http://www.', 'https://www.',
         ]
+        stop = [
+            '(',
+            ')',
+            '(all',
+            '(as',
+        ]
 
         words = line.split()
 
@@ -157,7 +163,7 @@ class Pdf:
                 break
 
             nxt = words[next_word]
-            if nxt[0] == '(':
+            if nxt[0] in stop:
                 break
 
             if url in partials or url[-1] in punctuation or \
