@@ -97,11 +97,14 @@ class Discovery:
                 print 'Skipping: %s' % opinion.name
                 continue
 
-            if opinion.was_republished():
-                print 'Ingesting  (REPUBLISHED): %s' % opinion.name
-                opinion.set_updated_on_previously_published()
-            else:
-                print 'Ingesting: %s  %s' % (opinion.name, opinion.pdf_url)
+            # There appear to be validly seperate opinions with the same name AND justice, so I am removing this republished check altogether for now
+            #if opinion.was_republished():
+            #    print 'Ingesting  (REPUBLISHED): %s' % opinion.name
+            #    opinion.set_updated_on_previously_published()
+            #else:
+            #    print 'Ingesting: %s  %s' % (opinion.name, opinion.pdf_url)
+
+            print 'Ingesting: %s  %s' % (opinion.name, opinion.pdf_url)
 
             opinion.save()
             self.new_opinions.append(opinion)
