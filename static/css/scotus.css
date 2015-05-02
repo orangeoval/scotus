@@ -8,3 +8,9 @@
 input#id_validated {
     width: 500px;
 }
+
+.patient,
+.load-wheel {
+    font-style: italic;
+    font-size:10px;
+}
