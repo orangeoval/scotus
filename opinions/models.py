@@ -50,7 +50,7 @@ class Opinion(models.Model):
         return False
 
     def was_republished(self):
-        prevs = Opinion.objects.filter(name=self.name)
+        prevs = Opinion.objects.filter(name=self.name, justice=self.justice)
 
         if prevs:
             self.republished = True
@@ -105,16 +105,13 @@ class Opinion(models.Model):
                 continue
 
             print '++Ingesting citation: %s' % url
-
-            # Check urls status, and see if archived
-            status = Url.check_status(url)
-
             new_citation = Citation(
                 opinion=Opinion(self.id),
                 scraped=url,
-                status=status[u'citation'],
-                archived_lc=status[u'archived_lc'],
-                archived_ia=status[u'archived_ia'],
             )
+
+            # Check urls status, and see if archived
+            status = Url.check_status(url)
+            new_citation.set_status(status)
 
             new_citation.save()
