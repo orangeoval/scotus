@@ -37,20 +37,22 @@ class Url:
     @classmethod
     def check_status(cls, url=False):
         status = {
-            u'citation': u'a',
-            u'archived_lc': False,
-            u'archived_ia': False,
+            'status': 'a',
+            'archived_lc': False,
+            'archived_ia': False,
         }
  
         request = Url.get(url)
 
         if not request or request.status_code == 404:
-            status[u'citation'] = u'u'
+            status['status'] = 'u'
         if request and request.status_code in [302, 301]:
-            status[u'citation'] = u'r'
+            status['status'] = 'r'
 
         request = Url.get(Citation.WAYBACK_IA + url)
         if request and request.status_code == 200:
-            status[u'archived_ia'] = True
+            status['archived_ia'] = True
+
+        #TODO: add check for LC
 
         return status
