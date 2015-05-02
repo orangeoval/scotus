@@ -4,3 +4,7 @@
     top: -75px;
     visibility: hidden;
 }
+
+input#id_validated {
+    width: 500px;
+}
