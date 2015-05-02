@@ -8,6 +8,7 @@ urlpatterns = [
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^$', 'scotus.views.overview', name='overview'),
+    url(r'^csv$', 'scotus.views.download_csv', name='overview'),
     url('', include('citations.urls')),
     url('', include('opinions.urls')),
     url('', include('justices.urls')),

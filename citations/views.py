@@ -47,19 +47,23 @@ def verify(request, citation_id):
         try:
             # Successful update
             citation = Citation.objects.get(id=request.POST['citation_id'])
+            scrape_evaluation = request.POST['scrape_evaluation']
+            validated = request.POST['validated']
 
             form = VerifyCitationForm({
-                'validated': request.POST['validated'],
-                'scrape_evaluation': request.POST['scrape_evaluation'],
+                'validated': validated,
+                'scrape_evaluation': scrape_evaluation,
             })
 
             if form.is_valid():
-                validated = request.POST['validated']
-                status = Url.check_status(validated)
-                citation.set_status(status)
+                # Don't waste time checking validated citation if matched scraped
+                if not validated == citation.scraped and scrape_evaluation == citation.scrape_evaluation: 
+                    status = Url.check_status(validated)
+                    citation.set_status(status)
+
                 citation.verify_date = timezone.now()
                 citation.validated = validated
-                citation.scrape_evaluation = request.POST['scrape_evaluation']
+                citation.scrape_evaluation = scrape_evaluation
                 citation.save()
                 return HttpResponseRedirect('/citations/#%s' % citation.id)
 
