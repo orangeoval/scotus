@@ -127,11 +127,6 @@ class Pdf:
             '%',
             '+',
         ]
-        strip = [
-            '.',
-            ',',
-            ';',
-        ]
         partials = [
             'www', 'www.',
             'http', 'https',
@@ -146,6 +141,11 @@ class Pdf:
             ')',
             '(all',
             '(as',
+        ]
+        strip = stop + [
+            '.',
+            ',',
+            ';',
         ]
 
         words = line.split()
@@ -175,7 +175,7 @@ class Pdf:
                 break
 
         for s in strip:
-            if url.endswith(s):
-                url = url[0:-1] 
+            if url[-len(s):] == s:
+                url = url.rstrip(s)
 
         return url
