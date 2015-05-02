@@ -1,6 +1,9 @@
 from django.shortcuts import render
 from citations.models import Citation
+from discovery.Url import Url
 from django.http import HttpResponseRedirect
+from django.utils import timezone
+from .forms import VerifyCitationForm
 
 def index(request):
     template = 'citations.html'
@@ -40,14 +43,48 @@ def opinion_citations(request, opinion_id):
 def verify(request, citation_id):
     template = 'verify.html'
 
-    try:
-        citation = Citation.objects.get(id=citation_id)
-    except Exception:
-        return redirect(request)
+    if request.method == 'POST':
+        try:
+            # Successful update
+            citation = Citation.objects.get(id=request.POST['citation_id'])
 
-    context = {
-        'citation': citation,
-    }
+            form = VerifyCitationForm({
+                'validated': request.POST['validated'],
+                'scrape_evaluation': request.POST['scrape_evaluation'],
+            })
+
+            if form.is_valid():
+                validated = request.POST['validated']
+                status = Url.check_status(validated)
+                citation.set_status(status)
+                citation.verify_date = timezone.now()
+                citation.validated = validated
+                citation.scrape_evaluation = request.POST['scrape_evaluation']
+                citation.save()
+                return HttpResponseRedirect('/citations/#%s' % citation.id)
+
+            # Didn't submit validated url
+            context = {
+                'citation': citation,
+                'form': form,
+            }
+
+        except Exception:
+            # Somehow attempted to validate citation not in DB
+            context = {
+                'error': 'No citation with id %s' % request.POST['citation_id'],
+            } 
+
+    else:
+        try:
+            citation = Citation.objects.get(id=citation_id)
+            form = VerifyCitationForm()
+            context = {
+                'citation': citation,
+                'form': form,
+            } 
+        except Exception:
+            return redirect(request)
 
     return render(request, template, context)
 

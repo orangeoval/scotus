@@ -22,7 +22,11 @@ class Citation(models.Model):
     status = models.CharField(max_length=1,
                               choices=STATUSES,
                               default=u'a')
-    validated = models.URLField(max_length=255,default=0)
-    verify_date = models.DateTimeField(u'date verified', blank=True, null=True)
+    validated = models.URLField(max_length=255, null=True)
+    verify_date = models.DateTimeField(u'date verified', null=True)
     archived_lc = models.BooleanField(default=False)
     archived_ia = models.BooleanField(default=False)
+
+    def set_status(self, status):
+        for key in status:
+            setattr(self, key, status[key])
