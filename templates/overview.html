@@ -1,32 +1,44 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <br>
-    <h1>Winnesburg, Ohio<h1>
-    <h2>Sherwood Anderson</h2>
-    <h3>THE TALES AND THE PERSONS</h3>
-    <p>The Book of the Grotesque</p>
-    <p>HANDS--concerning WING BIDDLEBAUM.</p>
-    <p>PAPER PILLS--concerning DOCTOR REEFY.</p>
-    <p>MOTHER--concerning ELIZABETH WILLARD.</p>
-    <p>THE PHILOSOPHER--concerning DOCTOR PARCIVAL.</p>
-    <p>NOBODY KNOWS--concerning LOUISE TRUNNION.</p>
-    <p>GODLINESS (PARTS I AND II)--concerning JESSE BENTLY.</p>
-    <p>SURRENDER (PART III)--concerning LOUISE BENTLY.</p>
-    <p>TERROR (PART IV)--concerning DAVID HARDY.</p>
-    <p>A MAN OF IDEAS--concerning JOE WELLING.</p>
-    <p>ADVENTURE-concerning ALICE HINDMAN.</p>
-    <p>RESPECTABILITY--concerning WASH WILLIAMS.</p>
-    <p>THE THINKER--concerning SETH RICHMOND.</p>
-    <p>TANDY--concerning TANDY HARD.</p>
-    <p>THE STRENGTH OF GOD--concerning THE REVERENT CURTIS HARTMAN.</p>
-    <p>THE TEACHER--concerning KATE SWIFT.</p>
-    <p>LONLINESS--concerning ENOCH ROBBINSON.</p>
-    <p>AN AWAKENING--concerning BELLE CARPENTER.</p>
-    <p>"QUEER"--concerning ELMER COWLEY.</p>
-    <p>THE UNTOLD LIE--concerning BAY PEARSON.</p>
-    <p>DRINK--concerning TOM FOSTER.</p>
-    <p>DEATH--concerning DOCTOR REEFY and ELIZABETH WILLARD.</p>
-    <p>SOPHISTICATION--concerning HELEN WHITE.</p>
-    <p>DEPARTURE--concerning GEORGE WILLARD.</p>
+    <!--Load highchart-->
+    <div id={{ chartID|safe }} class="chart" style="height: 100px;"></div>
+    <script>
+      var chart_id = {{ chartID|safe }}
+      var series = {{ series|safe }}
+      var title = {{ title|safe }}
+      var xAxis = {{ xAxis|safe }}
+      var yAxis = {{ yAxis|safe }}
+      var chart = {{ chart|safe }}
+    </script>
+    <script src="/static/js/highcharts.js"></script>
+    <script src="/static/js/chart.js"></script>
+
+    <!--Summary Info-->
+    <div class="overview">
+      <h2>Examining web citations in United States Supreme Court Opinions Over Time</h2>
+      <p>Turning and turning in the widening gyre
+      The falcon cannot hear the falconer;
+      Things fall apart; the centre cannot hold;
+      Mere anarchy is loosed upon the world,
+      The blood-dimmed tide is loosed, and everywhere
+      The ceremony of innocence is drowned;
+      The best lack all conviction, while the worst
+      Are full of passionate intensity.</p>
+
+      <p>Surely some revelation is at hand;
+      Surely the Second Coming is at hand.
+      The Second Coming! Hardly are those words out
+      When a vast image out of Spiritus Mundi
+      Troubles my sight: a waste of desert sand;
+      A shape with lion body and the head of a man,
+      A gaze blank and pitiless as the sun,
+      Is moving its slow thighs, while all about it
+      Wind shadows of the indignant desert birds.</p>
+
+      <p>The darkness drops again but now I know
+      That twenty centuries of stony sleep
+      Were vexed to nightmare by a rocking cradle,
+      And what rough beast, its hour come round at last,
+      Slouches towards Bethlehem to be born? </p>
 {% endblock %}
