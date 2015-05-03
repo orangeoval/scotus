@@ -57,7 +57,7 @@ def verify(request, citation_id):
 
             if form.is_valid():
                 # Don't waste time checking validated citation if matched scraped
-                if not validated == citation.scraped and scrape_evaluation == citation.scrape_evaluation: 
+                if validated != citation.scraped or scrape_evaluation != citation.scrape_evaluation: 
                     status = Url.check_status(validated)
                     citation.set_status(status)
 
