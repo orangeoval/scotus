@@ -50,7 +50,6 @@ class Citation(models.Model):
                 continue
 
             data = getattr(self, attr)
-            print 'ATTR=%s, DATA=%s, TYPE=%s' % (attr, data, type(data))
 
             if data is None:
                 data = ''
