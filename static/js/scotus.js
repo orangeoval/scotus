@@ -6,4 +6,7 @@ $(document).ready(function(){
     $('input[value="Verify"]').click(function () {
         $('div.load-wheel').show();
     });
+
+    //$('.overview').css( 'border', '3px solid red');
+    $('.overview').css( 'top', '275px');
 });
