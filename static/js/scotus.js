@@ -7,6 +7,6 @@ $(document).ready(function(){
         $('div.load-wheel').show();
     });
 
-    //$('.overview').css( 'border', '3px solid red');
+    //Move overview div down so displays under the chart
     $('.overview').css( 'top', '275px');
 });
