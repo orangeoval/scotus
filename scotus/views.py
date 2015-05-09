@@ -39,68 +39,31 @@ def download_csv(request):
 
     return response
 
+
 def overview(request):
     from opinions.models import Opinion
+    from citations.models import Citation
     from django.db.models import Count
     from datetime import timedelta
 
     template = 'overview.html'
-    chartID = 'chart_temporal_distribution'
-    chart_type = 'line'
-    chart_height = 400
     js_month = 2678400000
-    nyt_publication = 1379995200000
-   
-    # Get citation counts by date
-    data = []
-    opinions = Opinion.objects.values('published').annotate(citation_count=Count('citation'))
-    for opinion in opinions:
-        unix_date = int(opinion['published'].strftime('%s')) 
-        js_date = unix_date * 1000
-        data.append([js_date, opinion['citation_count']])
-
-    # Get earliest and latest date, plus/minus 1 month
-    sorted_data = sorted(data, key=lambda x: x[0])
-    earliest = sorted_data[0][0] - js_month
-    latest = sorted_data[-1][0] + js_month
-
     context = {
-        'chartID': chartID,
-        'chart': {
-            'renderTo': chartID,
-            'type': chart_type,
-            'height': chart_height,
-        },
-        'title': {
-            'text': '',
-        },
-        'xAxis': {
-            'type': 'datetime',
-            'min': earliest,
-            'max': latest,
-            'title': {
-                'text': 'date',
-            },
-            'plotLines': [
-                {
-                    'color': '#58FA82',
-                    'dashStyle': 'dot',
-                    'value': nyt_publication,
-                    'width': 2,
-                },
-            ],
-        },
-        'yAxis': {
-            'title': {
-                'text': '',
-            },
-        },
-        'series': [
-            {
-                'name': 'Web Citations',
-                'data': data,
-            },
-        ],
+        'nyt_publication': 1379995200000,
+        'available': Citation.objects.filter(status='a').count(),
+        'unavailable': Citation.objects.filter(status='u').count(),
+        'redirected': Citation.objects.filter(status='r').count(),
     }
+
+    # Get citation distribution data
+    context['citation_distribution'] = []
+    for opinion in Opinion.objects.values('published').annotate(citation_count=Count('citation')):
+        unix_date = int(opinion['published'].strftime('%s'))
+        js_date = unix_date * 1000
+        context['citation_distribution'].append([js_date, opinion['citation_count']])
+
+    sorted_data = sorted(context['citation_distribution'], key=lambda x: x[0])
+    context['earliest'] = sorted_data[0][0] - js_month
+    context['latest'] = sorted_data[-1][0] + js_month
 
     return render(request, template, context)

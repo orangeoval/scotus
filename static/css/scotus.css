@@ -1,7 +1,10 @@
-.overview {
-    display: block;
-    position: relative;
-    top:-100px;
+#overview {
+    float: left;
+    width: 100%;
+}
+
+#rot_distribution {
+    float: right;
 }
 
 .anchor {

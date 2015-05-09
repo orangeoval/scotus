@@ -1,21 +1,9 @@
 {% extends "base.html" %}
 
 {% block content %}
-    <!--Load highchart-->
-    <div id={{ chartID|safe }} class="chart" style="height: 100px;"></div>
-    <script>
-      var chart_id = {{ chartID|safe }}
-      var series = {{ series|safe }}
-      var title = {{ title|safe }}
-      var xAxis = {{ xAxis|safe }}
-      var yAxis = {{ yAxis|safe }}
-      var chart = {{ chart|safe }}
-    </script>
-    <script src="/static/js/highcharts.js"></script>
-    <script src="/static/js/chart.js"></script>
-
-    <!--Summary Info-->
-    <div class="overview">
+    <div id="citation_distribution" class="chart"></div>
+    <div id="overview">
+      <div id="rot_distribution" class="chart"></div>
       <h2>The Second Coming</h2>
       <p>Turning and turning in the widening gyre
       The falcon cannot hear the falconer;
@@ -43,4 +31,98 @@
       Slouches towards Bethlehem to be born? </p>
 
       <p><i>-William Butler Yeats</i></p>
+    </div>
+
+    <!--Load Highcharts-->
+    <script src="/static/js/highcharts.js"></script>
+    <script>
+        // Build Citation Distribution Chart
+        $('#citation_distribution').highcharts({
+            title: {
+                text: '',
+            },
+            chart: {
+                type: 'line',
+                height: 400,
+            },
+            credits: {
+                enabled: false,
+            },
+            xAxis: {
+                type: 'datetime',
+                min: {{ earliest }},
+                max: {{ latest }},
+                title: {
+                    text: '',
+                },
+                plotLines: [{
+                    color: '#58FA82',
+                    dashStyle: 'dot',
+                    value: {{ nyt_publication }},
+                    width: 2,
+                    label: {
+                        text: 'NYT Publication',
+                    },
+                }],
+            },
+            yAxis: {
+                title: {
+                    text: ''
+                },
+            },
+            series: [{
+                name: 'Web Citations',
+                data: {{ citation_distribution }},
+            }]
+        });
+
+        // Build Link Rot Chart
+        $('#rot_distribution').highcharts({
+            title: {
+                text: 'Citation<br>Link Rot',
+                align: 'center',
+                verticalAlign: 'middle',
+                y: 50,
+            },
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: 0,
+                plotShadow: false,
+                height: 400,
+                width:400,
+            },
+            credits: {
+                enabled: false,
+            },
+            plotOptions: {
+                 pie: {
+                     startAngle: -90,
+                     endAngle: 90,
+                     center: ['50%', '75%'],
+                     dataLabels: {
+                         enabled: true,
+                         distance: -50,
+                         style: {
+                             fontWeight: 'bold',
+                             color: 'white',
+                             textShadow: '0px 1px 2px black',
+                         },
+                     },
+                 }
+            },
+            series: [{
+                type: 'pie',
+                name: 'Link Rot Distribution',
+                innerSize: '50%',
+                data: [
+                  ['available', {{ available }}],
+                  ['unavailable', {{ unavailable }}],
+                  {% if redirected %}
+                  ['redirected', {{ redirected }}],
+                  {% endif %}
+                ],
+            }],
+
+        });
+    </script>
 {% endblock %}
