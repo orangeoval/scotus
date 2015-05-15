@@ -10,7 +10,7 @@ from citations.models import Citation
 
 class Opinion(models.Model):
 
-    category = models.CharField(max_length=30)
+    category = models.CharField(max_length=100)
     discovered = models.DateTimeField('date discovered')
     published = models.DateField('date published')
     name = models.CharField(max_length=255)
