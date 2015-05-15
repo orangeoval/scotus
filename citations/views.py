@@ -16,16 +16,22 @@ def index(request):
 
 def justice_opinions_citations(request, justice_id):
     template = 'citations.html'
-    citations = Citation.objects.filter(opinion_id__justice_id=justice_id)
 
-    if not citations:
-        return redirect(request)
+    # Check if filtering by link status instead of justice_id 
+    if justice_id in [status for code, status in Citation.STATUSES]:
+        return get_citations_by_status(request, justice_id)
 
-    context = {
-        'citations': citations,
-    }
+    else:
+        citations = Citation.objects.filter(opinion_id__justice_id=justice_id)
 
-    return render(request, template, context)
+        if not citations:
+            return redirect(request)
+
+        context = {
+            'citations': citations,
+        }
+
+        return render(request, template, context)
 
 def opinion_citations(request, opinion_id):
     template = 'citations.html'
@@ -89,6 +95,15 @@ def verify(request, citation_id):
             } 
         except Exception:
             return redirect(request)
+
+    return render(request, template, context)
+
+def get_citations_by_status(request, status):
+    template = 'citations.html'
+    citations = Citation.objects.filter(status=status[0])
+    context = {
+        'citations':citations,
+    }
 
     return render(request, template, context)
 

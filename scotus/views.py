@@ -45,10 +45,12 @@ def overview(request):
     from citations.models import Citation
     from django.db.models import Count
     from datetime import timedelta
+    from django.http import HttpRequest
 
     template = 'overview.html'
     js_month = 2678400000
     context = {
+        'base': HttpRequest.build_absolute_uri(request),
         'nyt_publication': 1379995200000,
         'available': Citation.objects.filter(status='a').count(),
         'unavailable': Citation.objects.filter(status='u').count(),

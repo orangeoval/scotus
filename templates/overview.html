@@ -100,7 +100,7 @@
                     value: {{ nyt_publication }},
                     width: 2,
                     label: {
-                        text: '<a href="http://www.nytimes.com/2013/09/24/us/politics/in-supreme-court-opinions-clicks-that-lead-nowhere.html?_r=0">NYT Publication</a>',
+                        text: '<a href="{{ cite_nyt }}">NYT Publication</a>',
                     },
                 }],
             },
@@ -154,9 +154,9 @@
                 name: 'Web Citations',
                 innerSize: '50%',
                 data: [
-                  ['available', {{ available }}],
-                  ['unavailable', {{ unavailable }}],
-                  ['redirected', {{ redirected }}],
+                  ['<a href="{{ base }}citations/available">available</a>', {{ available }}],
+                  ['<a href="{{ base }}citations/unavailable">unavailable</a>', {{ unavailable }}],
+                  ['<a href="{{ base }}citations/redirected">redirected</a>', {{ redirected }}],
                 ],
             }],
 
