@@ -25,14 +25,14 @@
 
             <td>
               {% if citation.validated %}
-                {% if citation.status == 'a' %}
+                {% if citation.status != 'u' %}
                   <a href="{{ citation.validated  }}">{{ citation.validated }}</a>
                 {% else %}
                   {{ citation.validated  }}
                 {% endif %}
               {% else %}
-                {% if citation.status == 'a' %}
-                  <a href="{{ citation.scraped  }}">{{ citation.scraped }}</a>
+                {% if citation.status != 'u' %}
+                    <a class="{{ citation.status }}" href="{{ citation.scraped  }}">{{ citation.scraped }}</a>
                 {% else %}
                   {{ citation.scraped }}
                 {% endif %}

@@ -46,8 +46,11 @@ class Url:
 
         if not request or request.status_code == 404:
             status['status'] = 'u'
-        if request and request.status_code in [302, 301]:
-            status['status'] = 'r'
+        # 300 status codes aren't captured, so must compare before and after urls
+        elif request and (request.url != url):
+            if request.url != url + '/':
+                if request.url.split('://')[1] != url.split('://')[1]:
+                    status['status'] = 'r'
 
         request = Url.get(Citation.WAYBACK_IA + url)
         if request and request.status_code == 200:

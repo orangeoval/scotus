@@ -23,3 +23,15 @@ input#id_validated {
     font-style: italic;
     font-size:10px;
 }
+
+a.r {
+  color: #90ED7D;
+}
+
+a.a {
+  color: #7CB5EC;
+}
+
+a.u {
+    color: #333;
+}
