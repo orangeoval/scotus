@@ -1,6 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from django.shortcuts import render
+from django.http import HttpResponseRedirect
+from django.contrib.auth import authenticate
+from django.contrib.auth import login as auth_login
+from django.contrib.auth import logout as auth_logout
+from django.contrib.auth.forms import AuthenticationForm
+
+def logout(request):
+    response = auth_logout(request)
+    return HttpResponseRedirect('/')
 
 def download_csv(request):
     from citations.models import Citation

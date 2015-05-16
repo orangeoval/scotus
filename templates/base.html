@@ -47,8 +47,13 @@
             <li class="{% if '/opinions/' in request.path %}active{% endif %}"><a href="/opinions">Opinions</a></li>
             <li class="{% if '/justices/' in request.path %}active{% endif %}"><a href="/justices">Justices</a></li>
             <li><a href="/csv">Download Data</a></li>
+            {% if request.user.is_authenticated %}
+              <li><a href="/logout">Logout</a></li>
+            {% else %}
+              <li><a href="/login">Login</a></li>
+            {% endif %}
           </ul>
-        </div><!--/.nav-collapse -->
+        </div>
       </div>
     </nav>    
 

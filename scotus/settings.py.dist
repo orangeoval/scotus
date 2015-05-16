@@ -125,6 +125,11 @@ STATICFILES_DIRS = [
     BASE_DIR + STATIC_URL,
 ]
 
+# Login handling
+LOGIN_URL = '/login'
+LOGIN_REDIRECT_URL = '/'
+LOGOUT_URL = '/banana'
+
 # Custom user agent for network requests
 USER_AGENT = 'Branched version of http://github.com/edsu/opinions running at Library of Congress' 
 CONTACT_EMAIL = 'pard@loc.gov'

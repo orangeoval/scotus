@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.contrib.auth.decorators import login_required
 from citations.models import Citation
 from discovery.Url import Url
 from django.http import HttpResponseRedirect
@@ -46,6 +47,7 @@ def opinion_citations(request, opinion_id):
 
     return render(request, template, context)
 
+@login_required()
 def verify(request, citation_id):
     template = 'verify.html'
 
