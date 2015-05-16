@@ -18,10 +18,6 @@
     margin: auto;
 }
 
-#failed-login {
-    color: red;
-}
-
 .anchor {
     display: block;
     position: relative;
