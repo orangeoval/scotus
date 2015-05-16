@@ -15,7 +15,7 @@
        <tbody>
        {% for opinion in opinions %}
        <tr>
-         <td><a href="{{ opinion.pdf_url }}">{{ opinion.name }}</a></td>
+         <td><a href="{{ opinion.pdf_url }}" target="_blank">{{ opinion.name }}</a></td>
          <td>{{ opinion.justice.name }}</td>
          <td>{{ opinion.published }}</td>
          <td>{% if opinion.updated %}{{ opinion.updated_date }}{% endif %}</td>
