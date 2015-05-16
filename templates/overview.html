@@ -10,28 +10,28 @@
       <p>
         In September of 2013 the <i>New York Times</i> announced that 49% of web citations published
         in United States Supreme Court opinions point to resources that are no longer accessible
-        via the cited URI.<sup><a href="{{ cite_nyt  }}">1</a></sup> This phenomenon is known as
+        via the cited URI.<sup><a href="{{ cite_nyt  }}" target="_blank">1</a></sup> This phenomenon is known as
         <i>link rot</i> and it occurs when web content is either moved on, or removed from, its hosting
         server, at which point all links referancing the content's original URI location immediately
-        break.<sup><a href="{{ cite_wiki }}">2</a></sup> Consequently, an attempt to visit such a link
+        break.<sup><a href="{{ cite_wiki }}" target="blank">2</a></sup> Consequently, an attempt to visit such a link
         results in the familiar <i>Page not found</i> 404 error.
       </p>
 
       <p>
         The <i>New York Times</i> article draws upon Harvard University's research into the validity
         of legal citations in both Harvard Law Review publications and U.S. Supreme Court
-        opinions.<sup><a href="{{ cite_harvard }}">3</a></sup>  The two data sets yeilded 
+        opinions.<sup><a href="{{ cite_harvard }}" target="blank">3</a></sup>  The two data sets yeilded 
         discouragingly high percentages of link rot in their respective citations.  In response to
         these findings, and the general tendency for link rot to expand over time as content
         is eventually removed from or moved within the web, Harvard created
-        <a href="{{ cite_perma }}">Perma.cc</a> as a means of mitigating the issue in academic
+        <a href="{{ cite_perma }}" target="blank">Perma.cc</a> as a means of mitigating the issue in academic
         and legal publications.
       </p>
 
       <p>
         In additiona to link rot, web citations may suffer a related form of degeneration known as
         <i>reference rot</i>, whereby a cited URI remains active while the content to which it refers
-        shifts over time.<sup><a href="{{ cite_aba }}">4</a></sup>  While machanisms like Harvard's
+        shifts over time.<sup><a href="{{ cite_aba }} target="blank"">4</a></sup>  While machanisms like Harvard's
         Perma.cc project offer solutions to these shortcoming of referncial web citations, they are
         new technologies designed to address an historically new problem.  Until a new standard is
         set and adopted by the wider academic community, the issues of link rot and referance rot will
@@ -44,14 +44,14 @@
         qaulity perma-link or handle to maintain long term accessibility.  One proactive approach is
         to monitor major academic and legal publications for new web citations and, upon discovery of
         a new citation, crawl the referenced content with an archival quality web crawler such as
-        <a href="{{ cite_heritrix }}">Heritrix</a>.  As content can change or disappear rapidly,
+        <a href="{{ cite_heritrix }}" target="blank">Heritrix</a>.  As content can change or disappear rapidly,
         the effectiveness of this wholesale approach hinges on our ability to harvest resources in rapid
         succession after their original publication. 
       </p>
 
       <p>
         This project aims to facilitate this process for opinions published to the
-        <a href="{{ cite_scotus }}">Supreme Court website</a>.  When a new opinion is published,
+        <a href="{{ cite_scotus }}" target="blank">Supreme Court website</a>.  When a new opinion is published,
         this application will download the opinion and log its associated meta-data.  The application
         will then convert each opinion PDF into plain-text, which it then parses and searches for web
         citations.  New citations are also logged in the database and presented via the applications web
@@ -68,7 +68,7 @@
         the gauge below that line chart provides a dynamic overview of the link rot that has affected
         the known supreme court web citations. Our data is freely available in csv format via the
         <a href="csv">Download Data</a> link at the top of the page.  The code for this applications
-        is also free available on <a href="{{ cite_github }}">GitHub</a>. 
+        is also free available on <a href="{{ cite_github }}" target="blank">GitHub</a>. 
       </p>
     </div>
 
