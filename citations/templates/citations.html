@@ -7,8 +7,7 @@
           <th>Verified</th>
           <th>Citation</th>
           <th>Opinion</th>
-          <th>Library of Congress</th>
-          <th>Internet Archive</th>
+          <th>Archives</th>
         </tr>
       </thead>
       <tbody>
@@ -42,22 +41,8 @@
             <td><a href="{{ citation.opinion.pdf_url  }}" target="_blank">{{ citation.opinion.name }}</a></td>
 
             <td>
-              {% if citation.archived_lc %}
-                {% if citation.validated == '0' %}
-                  <a href="{{ citation.WAYBACK_LC }}{{ citation.scraped }}" target="_blank">LC</a>
-                {% else %}
-                  <a href="{{ citation.WAYBACK_LC }}{{ citation.validated }}" target="_blank">LC</a>
-                {% endif %}
-              {% endif %}
-            </td>
-
-            <td>
-              {% if citation.archived_ia %}
-                {% if citation.validated == '0' %}
-                  <a href="{{ citation.WAYBACK_IA }}{{ citation.scraped }}" target="_blank">IA</a>
-                {% else %}
-                  <a href="{{ citation.WAYBACK_IA }}{{ citation.validated }}" target="_blank">IA</a>
-                {% endif %}
+              {% if citation.memento %}
+                <a href="{{ citation.memento }}" target="_blank">memento</a>
               {% endif %}
             </td>
           </tr>

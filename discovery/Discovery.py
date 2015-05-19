@@ -115,5 +115,7 @@ class Discovery:
             opinion.download()
             print 'Scraping: %s  %s' % (opinion.name, opinion.local_pdf)
             opinion.scrape()
-            print 'Ingesting citations from %s ' % opinion.name
-            opinion.ingest_citations()
+
+            if opinion.pdf.urls:
+                print 'Ingesting citations from %s' % opinion.name
+                opinion.ingest_citations()

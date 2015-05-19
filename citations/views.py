@@ -66,11 +66,10 @@ def verify(request, citation_id):
             if form.is_valid():
                 # Don't waste time checking validated citation if matched scraped
                 if validated != citation.scraped or scrape_evaluation != citation.scrape_evaluation: 
-                    status = Url.check_status(validated)
-                    citation.set_status(status)
+                    citation.verify_date = timezone.now()
+                    citation.validated = validated
+                    citation.get_statuses()
 
-                citation.verify_date = timezone.now()
-                citation.validated = validated
                 citation.scrape_evaluation = scrape_evaluation
                 citation.save()
                 return HttpResponseRedirect('/citations/#%s' % citation.id)

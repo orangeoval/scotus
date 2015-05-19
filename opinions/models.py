@@ -110,8 +110,6 @@ class Opinion(models.Model):
                 scraped=url,
             )
 
-            # Check urls status, and see if archived
-            status = Url.check_status(url)
-            new_citation.set_status(status)
-
+            new_citation.yyyymmdd = self.published.replace('-', '')
+            new_citation.get_statuses()
             new_citation.save()

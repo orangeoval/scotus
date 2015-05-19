@@ -1,4 +1,5 @@
 from django.db import models
+from discovery.Url import Url
 
 class Citation(models.Model):
     SCRAPE_EVALUATIONS = (
@@ -11,8 +12,7 @@ class Citation(models.Model):
         (u'u', u'unavailable'),
         (u'r', u'redirected'),
     )
-    WAYBACK_LC = 'http://webarchive.loc.gov/all/*/'
-    WAYBACK_IA = 'http://web.archive.org/web/*/'
+    MEMENTO = 'http://timetravel.mementoweb.org/list'
 
     opinion = models.ForeignKey('opinions.Opinion')
     scraped = models.URLField(max_length=255)
@@ -28,12 +28,35 @@ class Citation(models.Model):
     )
     validated = models.URLField(max_length=255, null=True)
     verify_date = models.DateTimeField(u'date verified', null=True)
-    archived_lc = models.BooleanField(default=False)
-    archived_ia = models.BooleanField(default=False)
+    memento = models.URLField(max_length=255, null=True)
 
-    def set_status(self, status):
-        for key in status:
-            setattr(self, key, status[key])
+    def get_statuses(self):
+
+        # If not ORM query object, yyyymmdd must be set manually before
+        # calling this method
+        if self.opinion.published is not None:
+            self.yyyymmdd = self.opinion.published.strftime("%Y%m%d")
+        elif not hasattr(self, 'yyyymmdd'):
+            return False
+
+        working_url = self.validated if self.validated else self.scraped
+        memento_url = "%s/%s/%s" % (Citation.MEMENTO, self.yyyymmdd, working_url)
+
+        request = Url.get(working_url)
+
+        if not request or request.status_code == 404:
+            self.status = 'u'
+
+        # 300 status codes aren't captured, so must compare before and after urls
+        elif request and (request.url != working_url):
+            if request.url != working_url + '/':
+                if request.url.split('://')[1] != working_url.split('://')[1]:
+                    self.status = 'r'
+
+        request = Url.get(memento_url)
+
+        if request and request.status_code == 200:
+            self.memento = memento_url
 
     def csv_row(self):
         ST = Citation.STATUSES
@@ -75,8 +98,7 @@ class Citation(models.Model):
             self.verify_date,
             self.se,
             self.st,
-            self.archived_lc,
-            self.archived_ia,
+            self.memento,
             self.opinion.name,
             self.opinion.justice.name,
             self.opinion.category,
