@@ -37,7 +37,7 @@ class Citation(models.Model):
         if self.opinion.published is not None:
             self.yyyymmdd = self.opinion.published.strftime("%Y%m%d")
         elif not hasattr(self, 'yyyymmdd'):
-            return False
+            return
 
         working_url = self.validated if self.validated else self.scraped
         memento_url = "%s/%s/%s" % (Citation.MEMENTO, self.yyyymmdd, working_url)
