@@ -54,12 +54,15 @@
         <a href="{{ cite_scotus }}" target="blank">Supreme Court website</a>.  When a new opinion is published,
         this application will download the opinion and log its associated meta-data.  The application
         will then convert each opinion PDF into plain-text, which it then parses and searches for web
-        citations.  New citations are also logged in the database and presented via the applications web
-        <a href="citations/">interface</a>.  That the opinions are presented in PDF format presents
+        citations.  That the opinions are initially published in PDF format presents
         challenges, as some citations span over multiple lines and/or pages, which makes uniform and
         flawless discovery of web citation strings extremely difficult.  To combat this obstacle, each
         citation must be validated by a human before being sent to the Library of Congress' in-house
         instance of Heritrix for harvesting.
+        Upon discovery, all new citations are logged in the database and presented via the application's citation
+        <a href="citations/">interface</a>.  If the application discovers valid web archive captures of a citation
+        in the <a href="http://timetravel.mementoweb.org/about/">Memento project</a> timegate, the "Archives" column will
+        display a link off to the Memento results relative to the source opinion's published date.
       </p>
 
       <p>
