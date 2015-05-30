@@ -29,6 +29,7 @@ class Citation(models.Model):
     validated = models.URLField(max_length=255, null=True)
     verify_date = models.DateTimeField(u'date verified', null=True)
     memento = models.URLField(max_length=255, null=True)
+    webcite = models.URLField(max_length=255, null=True)
 
     def get_statuses(self):
 

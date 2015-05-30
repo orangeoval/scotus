@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
+from scotus import settings
 from citations.models import Citation
 from discovery.Url import Url
 from django.http import HttpResponseRedirect
@@ -11,6 +12,7 @@ def index(request):
 
     context = {
         'citations': Citation.objects.all().order_by('-opinion__id'),
+        'WEBCITE': settings.WEBCITE,
     }
 
     return render(request, template, context)
@@ -70,11 +72,30 @@ def verify(request, citation_id):
                     citation.validated = validated
                     citation.get_statuses()
 
+                # If WEBCITE is enabled in settings.py and validated url is non-404, archive the
+                # validated url through WebCite service: http://www.webcitation.org
+                if settings.WEBCITE and citation.status != 'u':
+                    from requests import post
+                    import xml.etree.ElementTree as ET
+
+                    archive = '%s?returnxml=true&url=%s&email=%s' % (settings.WEBCITE_ARCHIVE, 
+                                                                     validated,
+                                                                     settings.CONTACT_EMAIL)
+                    response = post(archive)
+                    xml = response.text
+                    root = ET.fromstring(xml)
+            
+                    #TODO: should handle failure here more properly?
+                    try:
+                        citation.webcite = root.findall('resultset')[0].findall('result')[0].findall('webcite_url')[0].text
+                    except:
+                        pass
+
                 citation.scrape_evaluation = scrape_evaluation
                 citation.save()
                 return HttpResponseRedirect('/citations/#%s' % citation.id)
 
-            # Didn't submit validated url
+            # Submitted invalidated url
             context = {
                 'citation': citation,
                 'form': form,

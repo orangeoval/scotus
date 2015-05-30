@@ -125,12 +125,17 @@ STATICFILES_DIRS = [
     BASE_DIR + STATIC_URL,
 ]
 
+# Modules enables
+WEBCITE = True
+
+# Module variables
+WEBCITE_ARCHIVE = 'http://www.webcitation.org/archive'
+
 # Login handling
 LOGIN_URL = '/login'
 LOGIN_REDIRECT_URL = '/'
-LOGOUT_URL = '/banana'
 
 # Custom user agent for network requests
-USER_AGENT = 'Branched version of http://github.com/edsu/opinions running at Library of Congress' 
-CONTACT_EMAIL = 'pard@loc.gov'
+USER_AGENT = 'Branched version of http://github.com/edsu/opinions' 
+CONTACT_EMAIL = 'user@domain.com'
 REQ_HEADER = {"User-Agent": USER_AGENT, 'From': CONTACT_EMAIL}
