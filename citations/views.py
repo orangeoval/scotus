@@ -112,7 +112,11 @@ def verify(request, citation_id):
     else:
         try:
             citation = Citation.objects.get(id=citation_id)
-            form = VerifyCitationForm()
+            form = VerifyCitationForm(
+                initial = {
+                    'validated': citation.scraped,
+                }
+            )
             context = {
                 'citation': citation,
                 'form': form,
