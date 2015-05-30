@@ -77,6 +77,7 @@ def verify(request, citation_id):
                     from requests import post
                     import xml.etree.ElementTree as ET
 
+                    #TODO: add opinion/citation/scotus app info to metadata fields
                     archive = '%s?returnxml=true&url=%s&email=%s' % (settings.WEBCITE_ARCHIVE, 
                                                                      validated,
                                                                      settings.CONTACT_EMAIL)
