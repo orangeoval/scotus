@@ -66,10 +66,9 @@ def verify(request, citation_id):
             })
 
             if form.is_valid():
+
                 # Don't waste time checking validated citation if matched scraped
                 if validated != citation.scraped or scrape_evaluation != citation.scrape_evaluation: 
-                    citation.verify_date = timezone.now()
-                    citation.validated = validated
                     citation.get_statuses()
 
                 # If WEBCITE is enabled in settings.py and validated url is non-404, archive the
@@ -91,8 +90,11 @@ def verify(request, citation_id):
                     except:
                         pass
 
+                citation.verify_date = timezone.now()
+                citation.validated = validated
                 citation.scrape_evaluation = scrape_evaluation
                 citation.save()
+
                 return HttpResponseRedirect('/citations/#%s' % citation.id)
 
             # Submitted invalidated url
