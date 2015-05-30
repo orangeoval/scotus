@@ -18,10 +18,10 @@
               {% if citation.verify_date %} 
                 {% if WEBCITE and citation.webcite %}
                   <a href="{{ citation.webcite }}" target="_blank" title="Live capture coutesy of webcitation.org">
-                    {{ citation.verify_date|date:"Y.m.d" }}
+                    <span id="verify-date">{{ citation.verify_date|date:"Y.m.d" }}</span>
                   </a>
                 {% else %}
-                  {{ citation.verify_date|date:"Y.m.d" }}
+                  <span id="verify-date">{{ citation.verify_date|date:"Y.m.d" }}</span>
                 {% endif %}
               {% else %}
                 <a class="btn btn-primary" href="/citations/verify/{{ citation.id  }}" role="button">Verify</a>

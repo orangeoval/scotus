@@ -7,6 +7,10 @@
   float: right;
 }
 
+#verify-date {
+  font-style: italic;
+}
+
 #login-form {
   width: 200px;
   height: 200px;
@@ -26,7 +30,7 @@
 }
 
 input#id_validated {
-  width: 500px;
+  width: 1000px;
 }
 
 .js-disabled,
