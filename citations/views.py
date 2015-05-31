@@ -67,58 +67,23 @@ def verify(request, citation_id):
             })
 
             if form.is_valid():
+                citation.validated = validated
 
                 # Don't waste time checking validated citation if matched scraped
                 if validated != citation.scraped or scrape_evaluation != citation.scrape_evaluation: 
                     citation.get_statuses()
 
-                #TODO: add pertinent metadat to via api queries below
-                #TODO: handle try exceptions more fully
-                # Run on demand captures if citation if enabled in settings.py and citation is non-404
+                # If citation is non-404, check if ondemand captures are enabled
                 if citation.status != 'u':
-                    from requests import post
+                    citation.get_ondemand_captures()
 
-                    if settings.WEBCITE['enabled']:
-                        import xml.etree.ElementTree as ET
-
-                        archive = settings.WEBCITE['api_query'] % (validated, settings.CONTACT_EMAIL)
-                        response = post(archive)
-                        xml = response.text
-                        root = ET.fromstring(xml)
-            
-                        try:
-                            citation.webcite = root.findall('resultset')[0].findall('result')[0].findall('webcite_url')[0].text
-                        except:
-                            pass
-
-                    if settings.PERMA['enabled']:
-                        import json
-
-                        data = {
-                            'url': validated,
-                            'title': 'SCOTUS Opinion Citation',
-                        }
-                        headers = {
-                            'Content-type': 'application/json',
-                            'Accept': 'application/json',
-                        }
-                       
-                        try:
-                            response = post(
-                                settings.PERMA['api_query'] % settings.PERMA['api_key'],
-                                data=json.dumps(data),
-                                headers=headers,
-                            )
-                            archive_dict = json.loads(response.text)
-                            citation.perma = '%s/%s' % (settings.PERMA['archive_base'], archive_dict['guid'])
-                        except:
-                            pass
-                        
-
+                #REMOVE
+                print "D7"
                 citation.verify_date = timezone.now()
-                citation.validated = validated
                 citation.scrape_evaluation = scrape_evaluation
                 citation.save()
+                #REMOVE
+                print "D8"
 
                 return HttpResponseRedirect('/citations/#%s' % citation.id)
 

@@ -13,6 +13,7 @@ def logout(request):
 
 def download_csv(request):
     from citations.models import Citation
+    from scotus import settings
     from django.http import HttpResponse
     from datetime import datetime
     import csv
@@ -24,6 +25,8 @@ def download_csv(request):
         'Scrape Evaluation',
         'Citation Status',
         'Memento',
+        'WebCite',
+        'Perma.cc',
         'Opinion',
         'Justice',
         'Category',

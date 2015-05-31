@@ -1,4 +1,5 @@
 from django.db import models
+from scotus import settings
 from discovery.Url import Url
 
 class Citation(models.Model):
@@ -101,6 +102,8 @@ class Citation(models.Model):
             self.se,
             self.st,
             self.memento,
+            self.webcite,
+            self.perma,
             self.opinion.name,
             self.opinion.justice.name,
             self.opinion.category,
@@ -111,3 +114,58 @@ class Citation(models.Model):
             self.opinion.docket,
             self.opinion.part,
         ]
+
+
+    #TODO: add pertinent metadat to via api queries below
+    #TODO: handle try exceptions more fully
+    def get_ondemand_captures(self):
+        if not self.validated:
+            return
+
+        self.webcite_api_capture()
+        self.perma_api_capture()
+
+    def webcite_api_capture(self):
+        if not settings.WEBCITE['enabled']:
+            return
+
+        from requests import post
+        import xml.etree.ElementTree as ET
+        
+        archive = settings.WEBCITE['api_query'] % (self.validated, settings.CONTACT_EMAIL)
+        response = post(archive)
+        xml = response.text
+        root = ET.fromstring(xml)
+
+        try:
+            self.webcite = root.findall('resultset')[0].findall('result')[0].findall('webcite_url')[0].text
+        except:
+            return
+
+        
+    def perma_api_capture(self):
+        if not settings.PERMA['enabled']:
+            return
+
+        import json
+        from requests import post
+
+        data = {
+            'url': self.validated,
+            'title': 'SCOTUS Opinion Citation',
+        }
+        headers = {
+            'Content-type': 'application/json',
+            'Accept': 'application/json',
+        }
+
+        try:
+            response = post(
+                settings.PERMA['api_query'] % settings.PERMA['api_key'],
+                data=json.dumps(data),
+                headers=headers,
+            )
+            archive_dict = json.loads(response.text)
+            self.perma = '%s/%s' % (settings.PERMA['archive_base'], archive_dict['guid'])
+        except:
+            return
