@@ -63,8 +63,7 @@ PERMA = {
 }
 ```  
 
-Simply change ```False``` to ```True``` for the services that you want to enable.  If you'd like to enable perma.cc, you will need to put the API key that you generated in place of ```PERMA_CC_API_KEY```.  That's it!  If you encounter any bugs or experience issues setting up the application, feel free to open a ticket on this repository for further assistance.
-
+Simply change ```False``` to ```True``` for the services that you want to enable.  If you'd like to enable perma.cc, you will need to put the API key that you generated in place of ```PERMA_CC_API_KEY```.  Lastly, all discovered opinion PDFs will be saved to your local ```scotus/docs/pdfs``` directory for safe keeping.  That's it!  If you encounter any bugs or experience issues setting up the application, feel free to open a ticket on this repository for further assistance.  
 
 
 #### Overview Screen
