@@ -38,15 +38,14 @@ You will also want to change ```CONTACT_EMAIL``` to reflect your valid email add
 ./manage.py discover
 ```  
 
-However, it is more practical to have this process run automatically in your server's crontab.  To do this, you will need to edit the provided night processing script to point to the path where you installed the application.  From within the ```scotus/``` directory, do the following:   
+However, it is more practical to have this process run automatically in your server's crontab.  If you installed this application in your home directory on a unix OS, and your user name is 'abc', you could simply add the following to your crontab: ```/home/abc/scotus/manage.py discover```.  If you are using virtualenv/virtualenvwrapper, you can use the run the following from the ```scotus/``` directory:  
 
 ```
-cp scripts/discovery.sh.dist scripts/discovery.sh
-chmod 755 scripts/discovery.sh
-vi scripts/discovery.sh
+cp scripts/discover.sh.dist scripts/discover.sh
+chmod 755 scripts/discover.sh
 ```  
 
-Now change '/path/to' to reflect the path in which you installed the application.  So, if your user name is 'abc' and you installed this applciation in your home directory on a unix OS, the line would read ```/home/abc/scotus/scripts/discover.sh```.  For tips on setting up a unix cronjob, see [this documentation](http://www.wikihow.com/Set-up-a-Crontab-File-on-Linux).  
+See the ```discover.sh``` file that you created for further instructions on using the script.  For tips on setting up a unix cronjob, see [this documentation](http://www.wikihow.com/Set-up-a-Crontab-File-on-Linux).  
 
 Finally, you have the option to set up on-demand capturing via either webcitation.org, perma.cc, or both!  What this means is that, once a user validates a citation, if that citation is a non-404, the application will utilize the webcitations.org/perma.cc APIs to grab an immediate capture of the citation.  The links for these captures will be stored in your datbase and presented in the applications ```/citations/``` view.  To utlize the webcitation.org API, all you will need is a valid email address to get notifications.  To utilize the perma.cc API, you will need to set up a perma.cc account.  Once that is set up, you will need to log in, click your name in the upper right hand corner, click tools, then click "Generate API key".  You can activate the webcitations.org and/or perma.cc on-demand archiving by again editing the settings.py file.  From within the scotus/ directory, run ```vi scotus/settings.py``` and find the following block:  
 

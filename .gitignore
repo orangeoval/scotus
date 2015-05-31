@@ -2,4 +2,4 @@
 *.swp
 *.DS_Store
 scotus/settings.py
-scripts/discovery.sh
+scripts/discover.sh
