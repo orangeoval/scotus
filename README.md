@@ -1,5 +1,5 @@
 # United States Supreme Court 
-### web citation discovery, presentation, and validation.
+###### web citation discovery, presentation, and validation.
 
 #### Overview Screen
 ![](https://github.com/orangeoval/scotus/blob/master/static/img/screen_shots/overview_screen.png)
