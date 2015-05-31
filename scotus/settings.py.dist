@@ -93,9 +93,9 @@ WSGI_APPLICATION = 'scotus.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE':	'django.db.backends.mysql',
-        'NAME':		'scotus',
-        'USER':		'scotus',
-        'PASSWORD':	'scotus',
+        'NAME':		'MYSQL_DATABASE',
+        'USER':		'MYSQL_USER',
+        'PASSWORD':	'MYSQL_PASSWORD',
         'HOST':		'localhost',
         'PORT':		'3306',
     }
