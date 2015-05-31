@@ -9,6 +9,7 @@
 
 #verify-date {
   font-style: italic;
+  font-size: 12px;
 }
 
 #login-form {
@@ -39,13 +40,22 @@ input#id_validated {
   font-size:10px;
 }
 
-#webcitation-logo,
 #memento-logo {
   height: 30px;
   width: 30px;    
 }
 
-#memento-cell {
+#perma-logo {
+  height: 10px;
+  width: 17px;
+}
+
+#webcite-logo {
+  height: 14px;
+  width: 14px;
+}
+
+td.centered {
   text-align: center;
 }
 

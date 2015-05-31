@@ -13,6 +13,7 @@ def index(request):
     context = {
         'citations': Citation.objects.all().order_by('-opinion__id'),
         'WEBCITE': settings.WEBCITE,
+        'PERMA': settings.PERMA,
     }
 
     return render(request, template, context)
@@ -71,25 +72,48 @@ def verify(request, citation_id):
                 if validated != citation.scraped or scrape_evaluation != citation.scrape_evaluation: 
                     citation.get_statuses()
 
-                # If WEBCITE is enabled in settings.py and validated url is non-404, archive the
-                # validated url through WebCite service: http://www.webcitation.org
-                if settings.WEBCITE and citation.status != 'u':
+                #TODO: add pertinent metadat to via api queries below
+                #TODO: handle try exceptions more fully
+                # Run on demand captures if citation if enabled in settings.py and citation is non-404
+                if citation.status != 'u':
                     from requests import post
-                    import xml.etree.ElementTree as ET
 
-                    #TODO: add opinion/citation/scotus app info to metadata fields
-                    archive = '%s?returnxml=true&url=%s&email=%s' % (settings.WEBCITE_ARCHIVE, 
-                                                                     validated,
-                                                                     settings.CONTACT_EMAIL)
-                    response = post(archive)
-                    xml = response.text
-                    root = ET.fromstring(xml)
+                    if settings.WEBCITE['enabled']:
+                        import xml.etree.ElementTree as ET
+
+                        archive = settings.WEBCITE['api_query'] % (validated, settings.CONTACT_EMAIL)
+                        response = post(archive)
+                        xml = response.text
+                        root = ET.fromstring(xml)
             
-                    #TODO: should handle failure here more properly?
-                    try:
-                        citation.webcite = root.findall('resultset')[0].findall('result')[0].findall('webcite_url')[0].text
-                    except:
-                        pass
+                        try:
+                            citation.webcite = root.findall('resultset')[0].findall('result')[0].findall('webcite_url')[0].text
+                        except:
+                            pass
+
+                    if settings.PERMA['enabled']:
+                        import json
+
+                        data = {
+                            'url': validated,
+                            'title': 'SCOTUS Opinion Citation',
+                        }
+                        headers = {
+                            'Content-type': 'application/json',
+                            'Accept': 'application/json',
+                        }
+                       
+                        try:
+                            response = post(
+                                settings.PERMA['api_query'] % settings.PERMA['api_key'],
+                                data=json.dumps(data),
+                                headers=headers,
+                            )
+                            archive_dict = json.loads(response.text)
+                            citation.perma = '%s/%s' % (settings.PERMA['archive_base'], archive_dict['guid'])
+                        except:
+                            pass
+                        
 
                 citation.verify_date = timezone.now()
                 citation.validated = validated
