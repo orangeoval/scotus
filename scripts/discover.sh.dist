@@ -1,0 +1,14 @@
+#!/bin/bash
+
+/path/to/scotus/manage.py discover
+
+## Use the logic below instead of the line above if you are using virtualenv / virtualenvwrapper
+#source /Users/arderyp/.virtualenvs/scotus/bin/activate
+#
+#DJANGO_SETTINGS_MODULE=scotus.settings
+#PYTHONPATH=/Users/arderyp/git/scotus
+#export DJANGO_SETTINGS_MODULE
+#export PYTHONPATH
+#
+#echo;echo 'RUNNING DISCOVERY';echo
+#python $PYTHONPATH/manage.py discover
