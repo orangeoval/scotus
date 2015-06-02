@@ -77,13 +77,9 @@ def verify(request, citation_id):
                 if citation.status != 'u':
                     citation.get_ondemand_captures()
 
-                #REMOVE
-                print "D7"
                 citation.verify_date = timezone.now()
                 citation.scrape_evaluation = scrape_evaluation
                 citation.save()
-                #REMOVE
-                print "D8"
 
                 return HttpResponseRedirect('/citations/#%s' % citation.id)
 
