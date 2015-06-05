@@ -7,11 +7,6 @@
   float: right;
 }
 
-#verify-date {
-  font-style: italic;
-  font-size: 12px;
-}
-
 #login-form {
   width: 200px;
   height: 200px;
@@ -69,4 +64,8 @@ a.a {
 
 a.u {
   color: #333;
+}
+
+.label-as-badge {
+    border-radius: 1em;
 }

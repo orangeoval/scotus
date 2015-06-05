@@ -16,19 +16,33 @@
         <td>{{ justice.name }}</td>
         <td>
           {% if justice.opinion_count %}
-            <a href="/opinions/{{ justice.id  }}">{{ justice.opinion_count }}</a>
+            <a href="/opinions/{{ justice.id  }}" title="view justice opinions">
+              <span class="label label-info label-as-badge">
+                {{ justice.opinion_count }}
+              </span>
+            </a>
           {% else %}
-            {{ justice.opinion_count }}
+            <span class="label label-default label-as-badge">
+              {{ justice.opinion_count }}
+            </span>
           {% endif %}
         </td>
         <td>
           {% if justice.citation_count %}
-            <a href="/citations/{{ justice.id  }}">{{ justice.citation_count  }}</a>
+            <a href="/citations/{{ justice.id  }}" title="view justice citations">
+              <span class="label label-info label-as-badge">
+                {{ justice.citation_count  }}
+              </span>
+            </a>
           {% else %}
-            {{ justice.citation_count }}
+            <span class="label label-default label-as-badge">
+              {{ justice.citation_count  }}
+            </span>
           {% endif %}
         </td>
-        <td>{{ justice.average_count }}</td>
+        <td>
+          {{ justice.average_count }}
+        </td>
       </tr>
       {% endfor %}
       <tbody>

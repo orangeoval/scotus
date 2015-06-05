@@ -21,9 +21,15 @@
          <td>{% if opinion.updated %}{{ opinion.updated_date }}{% endif %}</td>
          <td>
            {% if opinion.citation_count %}
-             <a href="/citations/{{ opinion.id  }}">{{ opinion.citation_count }}</a>
+             <a href="/citations/{{ opinion.id  }}" title="view opinion citations">
+               <span class="label label-info label-as-badge">
+                 {{ opinion.citation_count }}
+               </span>
+             </a>
            {% else %}
-             {{ opinion.citation_count }}
+             <span class="label label-default label-as-badge">
+               {{ opinion.citation_count }}
+             </span>
            {% endif %}
          </td>
        </tr>
