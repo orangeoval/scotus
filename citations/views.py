@@ -7,10 +7,6 @@ from django.http import HttpResponseRedirect
 from django.utils import timezone
 from .forms import VerifyCitationForm
 
-#TODO: even if move forward with robust link method, should still send
-# PERMA/WEBCITE variable for the noscript view.  Might want to decide
-# to move forward with one or the othe (PERMA/WEBCITE). Right now, 
-# the default links off of the citation page prefer PERMA
 
 def index(request):
     template = 'citations.html'
