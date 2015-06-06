@@ -69,7 +69,7 @@ Simply change ```False``` to ```True``` for the services that you want to enable
 ![](https://github.com/orangeoval/scotus/blob/master/static/img/screen_shots/overview_screen.png)
 
 #### Citations Screen
-![](https://github.com/orangeoval/scotus/blob/master/static/img/screen_shots/citation_screen.png)
+![](https://github.com/orangeoval/scotus/blob/master/static/img/screen_shots/citations_screen.png)
 
 #### Opinions Screen
 ![](https://github.com/orangeoval/scotus/blob/master/static/img/screen_shots/opinions_screen.png)

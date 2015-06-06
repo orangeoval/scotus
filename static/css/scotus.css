@@ -54,18 +54,18 @@ td.centered {
   text-align: center;
 }
 
-a.r {
-  color: #90ED7D;
-}
-
-a.a {
-  color: #7CB5EC;
-}
-
-a.u {
-  color: #333;
-}
-
 .label-as-badge {
     border-radius: 1em;
+}
+
+.status-a {
+    background-color: #90ed7d;
+}
+
+.status-r {
+    background-color: #f7a35c;
+}
+
+.status-u {
+    background-color: #434348;
 }

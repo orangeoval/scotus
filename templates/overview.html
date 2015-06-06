@@ -119,6 +119,15 @@
         });
 
         // Build Link Rot Chart
+        Highcharts.setOptions(
+            {
+                colors: [
+                    '#90ed7d',
+                    '#f7a35c',
+                    '#434348',
+                ]
+            }
+        );
         $('#rot_distribution').highcharts({
             title: {
                 text: 'Citation<br>Link Rot',
@@ -158,8 +167,8 @@
                 innerSize: '50%',
                 data: [
                   ['<a href="{{ base }}citations/available">available</a>', {{ available }}],
-                  ['<a href="{{ base }}citations/unavailable">unavailable</a>', {{ unavailable }}],
                   ['<a href="{{ base }}citations/redirected">redirected</a>', {{ redirected }}],
+                  ['<a href="{{ base }}citations/unavailable">unavailable</a>', {{ unavailable }}],
                 ],
             }],
 

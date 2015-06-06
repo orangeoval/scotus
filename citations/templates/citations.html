@@ -1,24 +1,14 @@
 {% extends "base.html" %}
 
-{% block javascript %}
-<script src="/static/js/robustlinks.js"></script>
-{% endblock %}
-
-{% block css %}
-<link href="/static/css/robustlinks.css" media="all" rel="stylesheet">
-{% endblock %}
-
 {% block content %}
     <table class="table table-striped">
       <thead>
         <tr>
           <th>Verified</th>
+          <th>Status</th>
           <th>Citation</th>
           <th>Opinion</th>
-          <!--provide memento links is JS disabled, blocking robustlinks-->
-          <noscript>
-            <th>Memento</th>
-          </noscript>
+          <th>Memento</th>
         </tr>
       </thead>
       <tbody>
@@ -28,7 +18,7 @@
               <a class='anchor' name='{{ citation.id }}'></a>
               {% if citation.verify_date %} 
                 {% if citation.perma %}
-                  <a target="_blank" href="{{ citation.perma }}?type=source" title="view application capture">
+                  <a target="_blank" href="{{ citation.perma }}" title="view application capture">
                     <span class="label label-info label-as-badge">
                       {{ citation.verify_date|date:"Y.m.d" }}
                     </span>
@@ -44,35 +34,42 @@
             </td>
 
             <td>
-              {% if citation.validated %}
-                <a target="_blank" class="{{ citation.status }}" href="{{ citation.validated }}" title="visit live citation page"
-                  data-versiondate="{{ citation.opinion.published|date:"Y-m-d" }}"
-                  {% if citation.perma %}data-versionurl="{{ citation.perma }}?type=source"{% endif %}>
+              <span class="label label-default label-as-badge status-{{ citation.status }}">
+                {{ citation.status }}
+              </span>
+            </td>
+
+            <td>
+              {% if citation.status == 'u' %}
+                {% if citation.validated %}
                   {{ citation.validated }}
-                </a>
-              {% else %}
-                <a target="_blank" class="{{ citation.status }}" href="{{ citation.scraped  }}"
-                   data-versiondate="{{ citation.opinion.published|date:"Y-m-d" }}"
-                   {% if citation.perma %}data-versionurl="{{ citation.perma }}?type=source"{% endif %}>
+                {% else %}
                   {{ citation.scraped }}
-                </a>
-              {% endif %}        
+                {% endif %}
+              {% else %}
+                {% if citation.validated %}
+                  <a target="_blank" href="{{ citation.validated }}" title="visit live citation page">
+                    {{ citation.validated }}
+                  </a>
+                {% else %}
+                  <a target="_blank" href="{{ citation.scraped }}" title="visit live citation page">
+                    {{ citation.scraped }}
+                  </a>
+                {% endif %}
+              {% endif %}
             </td>
 
             <td>
               <a href="{{ citation.opinion.pdf_url  }}" target="_blank">{{ citation.opinion.name }}</a>
             </td>
 
-            <!--provide memento links is JS disabled, blocking robustlinks-->
-            <noscript>
-              <td>
-                {% if citation.memento %}
-                  <a href="{{ citation.memento }}" target="_blank" title="view Memento captures">
-                    <img src="/static/img/memento-logo.png" id="memento-logo" />
-                  </a>
-                {% endif %}
-              </td>
-            </noscript>
+            <td>
+              {% if citation.memento %}
+                <a href="{{ citation.memento }}" target="_blank" title="view Memento captures">
+                  <img src="/static/img/memento-logo.png" id="memento-logo" />
+                </a>
+              {% endif %}
+            </td>
 
           </tr>
         {% endfor %}

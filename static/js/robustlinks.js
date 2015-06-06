@@ -190,6 +190,7 @@ document.addEventListener('DOMContentLoaded', function() {
             //arrowDown.setAttribute('class', 'robustLinks dropDownButton RLArrow');
             //arrowDown.setAttribute('class', 'robustLinks dropDownButton glyphicon glyphicon-link');
             arrowDown.setAttribute('class', 'robustLinks dropDownButton glyphicon glyphicon-triangle-bottom');
+            arrowDown.setAttribute('title', 'robustlinks');
             arrowDown.setAttribute('aria-controls', popupID);
 
             // The link glyph
