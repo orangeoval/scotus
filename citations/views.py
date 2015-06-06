@@ -13,6 +13,7 @@ def index(request):
 
     context = {
         'citations': Citation.objects.all().order_by('-opinion__id'),
+        'statuses': dict(Citation.STATUSES),
     }
 
     return render(request, template, context)
@@ -32,6 +33,7 @@ def justice_opinions_citations(request, justice_id):
 
         context = {
             'citations': citations,
+            'statuses': dict(Citation.STATUSES),
         }
 
         return render(request, template, context)
@@ -45,6 +47,7 @@ def opinion_citations(request, opinion_id):
 
     context = {
         'citations':citations,
+        'statuses': dict(Citation.STATUSES),
     }
 
     return render(request, template, context)
@@ -116,6 +119,7 @@ def get_citations_by_status(request, status):
     citations = Citation.objects.filter(status=status[0]).order_by('-opinion__id')
     context = {
         'citations':citations,
+        'statuses': dict(Citation.STATUSES),
     }
 
     return render(request, template, context)

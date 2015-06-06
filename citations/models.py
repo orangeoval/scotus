@@ -11,7 +11,7 @@ class Citation(models.Model):
     STATUSES = (
         (u'a', u'available'),
         (u'u', u'unavailable'),
-        (u'r', u'redirected'),
+        (u'r', u'redirect'),
     )
     MEMENTO = 'http://timetravel.mementoweb.org/list'
 
